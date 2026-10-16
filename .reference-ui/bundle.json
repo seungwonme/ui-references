@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "files": {
     ".reference-ui/scripts/reference-ui.py": "599852e5a925a6e85dd79e017fbeec967e7eecc943088fbd4b387bda08b217e7",
-    ".reference-ui/scripts/gallery.py": "fd42899a49f30d087d6f5cbf0d6cc76bc0902b80d24de6519e9b63b8f0a31c29",
+    ".reference-ui/scripts/gallery.py": "3c914fc2a3eec9c0be0ec90ed0b57902adef904749b937557096e2c54e66c234",
     ".reference-ui/assets/config.example.json": "16c4ee45e11702fa2d84332aa051f3da35afd52746602481d8849230a971c7b9",
     ".reference-ui/assets/reference-template.json": "f759b6f05663038bbfc7ced82c3d54ca1f383537f121693bf1755cf5d5305032",
     ".reference-ui/assets/tokens-template.json": "a6e2c4bcbd26aa9d7ef2c42b50e046f1b43c811db7d931c2913c860d9fc0195c",

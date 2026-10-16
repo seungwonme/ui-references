@@ -32,7 +32,8 @@ def progress(stage, detail):
 def command(argv, cwd=None, check=True):
     result = subprocess.run(argv, cwd=cwd, text=True, capture_output=True)
     if check and result.returncode:
-        raise RuntimeError(f"{argv[0]} {argv[1] if len(argv)>1 else ''} failed: {result.stderr.strip()[:1500]}")
+        diagnostic = result.stderr.strip() or result.stdout.strip() or "No diagnostic output."
+        raise RuntimeError(f"{argv[0]} {argv[1] if len(argv)>1 else ''} failed (exit {result.returncode}): {diagnostic[:1500]}")
     return result
 
 
