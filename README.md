@@ -4,6 +4,18 @@
 
 [갤러리 열기](https://seungwonme.github.io/ui-references/) / [프로젝트 스킬](.agents/skills/reference-ui-gallery/SKILL.md) / [Aside 디자인 규칙](references/aside-glass/DESIGN.md)
 
+## REA, taste-skill, prototype
+
+| 단계 | 역할 | 실행 가이드 |
+|---|---|---|
+| REA | 앱/ASAR/웹의 구조와 소스 근거를 분석하고 실제 화면 측정과 대조 | [REA 기반 추출](.agents/skills/reference-ui-gallery/references/rea-extraction.md) |
+| taste-skill | 마케팅 페이지의 시각 방향 또는 기존 앱의 개선 항목 선택 | [용도별 Taste 적용](.agents/skills/reference-ui-gallery/references/taste-and-prototype.md) |
+| Matt Pocock prototype | 같은 콘텐츠로 구조가 다른 화면을 비교하고 선택 이유를 보관 | [프로토타입 비교](.agents/skills/reference-ui-gallery/references/taste-and-prototype.md#prototype을-공통-비교-절차로-쓰기) |
+
+프로젝트 스킬에 도구 선택, 실제 호출, 결과 정리와 미설치 시 대체 절차를 포함했습니다. REA MCP와 Taste/prototype은 현재 하네스에 설치된 도구와 스킬을 확인해 사용합니다. 설치와 원본 문서는 [REA](https://github.com/morluto/rea), [taste-skill](https://github.com/leonxlnx/taste-skill), [Matt Pocock skills](https://github.com/mattpocock/skills)에서 확인할 수 있습니다.
+
+Taste 기본 v2의 웹 아트 디렉션과 앱/대시보드 개선을 구분합니다. 원본의 색/서체/컴포넌트 규칙과 기존 스택을 우선하며, 사진이나 특정 화면의 배치를 디자인 시스템의 필수 요소로 가져오지 않습니다.
+
 ## 프로젝트 스킬
 
 프로젝트 스킬은 `reference-ui-gallery` 하나입니다. 전역 `reference-ui`와 이름이 충돌하지 않도록 호출명을 구분했으며, 본문부터 테스트까지 전체 묶음을 포함합니다.
@@ -12,7 +24,7 @@
 .agents/skills/reference-ui-gallery/
 ├── SKILL.md
 ├── README.md
-├── references/    # 설정, 추출, 산출물 계약, 재사용과 발행
+├── references/    # 설정, REA 추출, Taste/prototype, 계약과 발행
 ├── scripts/       # 생성, 검증, 빌드, GitHub 발행
 ├── assets/        # 빈 설정, 토큰/메타데이터 템플릿, 갤러리와 Actions
 └── tests/         # 행동 검사와 평가 기록
