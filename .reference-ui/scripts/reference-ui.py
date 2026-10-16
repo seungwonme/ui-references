@@ -191,7 +191,9 @@ def workspace_info(data):
     workspace = Path(data["workspace_path"])
     require(workspace.is_dir(), "Workspace does not exist; clone/create the intended gallery explicitly, then run doctor.")
     if (SKILL_ROOT / "SKILL.md").exists():
-        require(workspace != SKILL_ROOT and SKILL_ROOT not in workspace.parents and workspace not in SKILL_ROOT.parents, "Gallery checkout must be separate from the skill installation.")
+        project_skill = SKILL_ROOT.parent == workspace.resolve() / ".agents" / "skills"
+        separate = workspace != SKILL_ROOT and SKILL_ROOT not in workspace.parents and workspace not in SKILL_ROOT.parents
+        require(project_skill or separate, "Gallery checkout must be separate from the skill installation, except for a project skill under its .agents/skills directory.")
     roots = git(workspace, "rev-parse", "--show-toplevel")
     require(roots and Path(roots[0]).resolve() == workspace.resolve(), "workspace_path must name the Git checkout root, not a nested folder.")
     remote = data["remote_name"]
@@ -417,6 +419,7 @@ def parser():
     publish = commands.add_parser("publish", help="Plan or create a reviewed entry PR, then optionally merge and verify Pages")
     publish.add_argument("source", help="Directory of a ready reference package with an explicit public file list")
     publish.add_argument("--gallery-style", help="Reviewed CSS to store as repo-owned gallery.css; assets must already be publicly exported")
+    publish.add_argument("--project-skill", action="store_true", help="Include the complete reference-ui-gallery project skill; later publications keep it synchronized")
     publish.add_argument("--apply", action="store_true")
     publish.add_argument("--merge", action="store_true", help="Merge only after the PR build passes; requires authorization")
     publish.add_argument("--timeout", type=int, default=300, help="Seconds allowed for each asynchronous CI/Pages wait")
