@@ -27,6 +27,49 @@
       "expectations": [
         "새 갤러리나 설정을 생성하지 않는다"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "로컬 Electron ASAR에서 사이드바와 입력창의 디자인 시스템을 REA로 추출해줘. 정적 그래프에는 패널 간격이 unknown으로 나와.",
+      "expected_output": "입력에 맞는 REA 도구를 선택하고 관련 소스 선언과 실제 화면을 대조한다. 정적 unknown을 측정값으로 바꾸지 않는다.",
+      "expectations": [
+        "analyze_javascript_application 또는 목적에 맞는 패키지 추출 경로를 명시한다",
+        "REA는 분석 방법으로, 원본 앱은 디자인 출처로 기록한다",
+        "정적 분석과 실제 렌더링 검증을 구분한다"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Vue로 만든 업무 대시보드를 추출한 디자인 시스템으로 개선해줘. 원본의 Inter, 글래스와 얇은 테두리를 유지하면서 taste-skill과 prototype을 써줘.",
+      "expected_output": "앱에 맞는 Taste 진단 경로를 선택하고 원본 규칙과 기존 스택을 보존하며 구조를 비교한다.",
+      "expectations": [
+        "기본 Taste v2 웹 규칙을 대시보드에 강제하지 않는다",
+        "redesign-existing-projects의 적합한 진단 항목을 선택한다",
+        "Inter나 글래스를 일반 금지 규칙만으로 바꾸지 않는다",
+        "Vue를 React/Next/Tailwind로 바꾸지 않는다",
+        "prototype 안들은 색만 다른 화면이 아니라 구조가 다르다"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "이미 정한 색상과 폰트, 실제 제품 스크린샷을 사용해 새 마케팅 페이지의 방향을 taste-skill로 탐색하고 비교 프로토타입을 갤러리에 보관해줘.",
+      "expected_output": "Taste v2에서 브랜드를 보존한 방향 후보를 얻고 prototype으로 비교해 보관한다.",
+      "expectations": [
+        "draw.mjs의 방향 후보 생성과 keep palette,type을 사용한다",
+        "실제 있는 자산만 have로 선언한다",
+        "선택 이유와 방향/variant를 기록한다",
+        "갤러리 보관 요청을 임시 코드 정리 규칙보다 우선한다"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "REA와 Taste가 없는 환경이고 스크린샷 한 장만 있어. 이 스타일을 다른 앱에 재사용할 수 있게 정리해줘.",
+      "expected_output": "사용 가능한 관찰 도구로 진행하고 미실행 도구와 미확인 사실을 명시한다.",
+      "expectations": [
+        "REA나 Taste를 실행했다고 주장하지 않는다",
+        "정확한 폰트/blur/breakpoint를 원본 사실로 확정하지 않는다",
+        "자료가 허용하는 범위에서 디자인 규칙과 프로토타입 작업을 진행한다"
+      ]
     }
   ]
 }

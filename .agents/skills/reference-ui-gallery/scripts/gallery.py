@@ -16,7 +16,7 @@ import time
 from urllib.parse import unquote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
-VERSION = "0.4.0"
+VERSION = "0.5.0"
 WORKFLOW = "UI reference pages"
 PROJECT_SKILL_NAME = "reference-ui-gallery"
 PROJECT_SKILL_ROOT = ".agents/skills/" + PROJECT_SKILL_NAME
@@ -28,6 +28,7 @@ RUNTIME_FILES = (
 SKILL_FILES = RUNTIME_FILES + (
     "SKILL.md", "README.md", "references/setup.md", "references/extraction.md",
     "references/package-contract.md", "references/gallery-and-reuse.md",
+    "references/rea-extraction.md", "references/taste-and-prototype.md",
     "tests/test_reference_ui.py", "tests/eval-cases.json", "tests/eval-report.md",
 )
 

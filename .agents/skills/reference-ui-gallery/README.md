@@ -4,6 +4,16 @@
 
 사용자 진입점은 [SKILL.md](SKILL.md)다. 도구는 Python 표준 라이브러리, Git, GitHub CLI를 사용한다. 설정/조회/검증/빌드는 로컬에서 실행한다. 저장소 생성과 발행은 먼저 계획을 반환하고 `--apply`에서만 외부 변경을 실행한다. 사용자 설정은 설치 폴더 밖에 두고, 배포 템플릿의 사용자 값은 비워 둔다.
 
+## REA, Taste, prototype 연결
+
+| 역할 | 연결된 절차 |
+|---|---|
+| REA로 원본 앱/번들/웹에서 구조와 근거 확보 | [대상별 도구, 실제 입력, 토큰/디자인 문서로 정리하는 방법](references/rea-extraction.md) |
+| taste-skill로 시각 방향과 개선안 선택 | [웹 아트 디렉션과 앱 개선을 나누는 적용 기준](references/taste-and-prototype.md) |
+| Matt Pocock prototype으로 구조 비교 | [같은 화면/데이터로 세 안을 비교하고 결과를 보존하는 절차](references/taste-and-prototype.md#prototype을-공통-비교-절차로-쓰기) |
+
+REA MCP와 Taste/prototype 플러그인은 외부 도구다. 이 패키지는 이들을 선택하고 결과를 연결하는 절차를 포함한다. 설치된 도구/스킬을 먼저 확인하며, 미설치 또는 미실행을 사용 완료로 표시하지 않는다. 프로젝트 스킬을 배포할 때도 위 참조 문서를 전체 묶음에 포함한다.
+
 ## 설계 근거
 
 | 출처 | 반영한 원칙 |
