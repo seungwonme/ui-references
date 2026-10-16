@@ -16,12 +16,12 @@ import time
 from urllib.parse import unquote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 WORKFLOW = "UI reference pages"
 RUNTIME_FILES = (
     "scripts/reference-ui.py", "scripts/gallery.py", "assets/config.example.json",
     "assets/reference-template.json", "assets/tokens-template.json", "assets/design-template.md",
-    "assets/gallery.css", "assets/gallery.js", "assets/pages.yml",
+    "assets/gallery.html", "assets/gallery.css", "assets/gallery.js", "assets/pages.yml",
 )
 
 
@@ -108,9 +108,21 @@ def public_files(root, metadata, api):
         api.require(path.stat().st_nlink == 1, "Public files must not be hard links.")
         if path.suffix.lower() in {".html", ".css", ".js", ".json", ".md", ".txt", ".svg"}:
             content = path.read_text(encoding="utf-8")
-            api.require(not re.search(r"file:///|/Users/|/private/var/folders/|/var/folders/|/home/[^/\s]+/", content), f"Public file contains a machine-local path: {relative}")
-            api.require(not re.search(r"https?://[^\s/\"'<>]+:[^\s/@\"'<>]+@|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----", content), f"Public file contains a credential marker: {relative}")
+            check_public_text(content, relative, api)
     return sorted(files)
+
+
+def check_public_text(content, label, api):
+    api.require(not re.search(r"file:///|/Users/|/private/var/folders/|/var/folders/|/home/[^/\s]+/", content), f"Public file contains a machine-local path: {label}")
+    api.require(not re.search(r"https?://[^\s/\"'<>]+:[^\s/@\"'<>]+@|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----", content), f"Public file contains a credential marker: {label}")
+
+
+def gallery_style(path, api):
+    path = managed_path(path.parent, path.name, api)
+    api.require(path.is_file() and path.suffix == ".css", "Gallery style must be an existing UTF-8 .css file.")
+    content = path.read_text(encoding="utf-8")
+    check_public_text(content, "gallery.css", api)
+    return content
 
 
 def token_css(document, api):
@@ -214,9 +226,14 @@ def build_site(workspace, output, api, drafts=False):
     for name in ("gallery.css", "gallery.js"):
         shutil.copyfile(api.ASSETS / name, assets / name)
     data = api.dump_json(listing).replace("<", "\\u003c")
-    document = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="원본의 디자인 규칙을 추출하고 실제 화면으로 검증한 UI 레퍼런스 라이브러리"><title>UI References</title><link rel="stylesheet" href="assets/gallery.css"></head><body><header><a class="wordmark" href="./">UI / REFERENCES</a><button id="theme" type="button" aria-label="테마 전환">Light / Dark</button></header><main><section class="intro"><p class="eyebrow">A WORKING DESIGN LIBRARY</p><h1>보고, 열어보고,<br>다시 만들 수 있는 UI.</h1><p class="lead">화면과 그 뒤의 규칙을 함께 모읍니다.<br>프로토타입, 디자인 시스템, 추출 근거를 한 자리에서 확인하세요.</p></section><section aria-label="레퍼런스 목록"><div class="toolbar"><label class="search">검색<input id="search" type="search" placeholder="이름, 플랫폼, 디자인 태그" autocomplete="off"></label><span id="count" aria-live="polite"></span></div><div id="filters" class="filters" aria-label="플랫폼 필터"></div><div id="grid" class="grid"></div><p id="empty" hidden>조건에 맞는 레퍼런스가 없습니다.</p></section></main><footer>실행 가능한 디자인 연구. 각 항목에 출처와 검증 범위를 기록합니다.</footer><script id="catalog" type="application/json">CATALOG_DATA</script><script src="assets/gallery.js"></script></body></html>'''
-    if drafts:
-        document = document.replace('<main>', '<main><p role="status">DRAFT / 검증 전 로컬 미리보기</p>')
+    style = managed_path(workspace, "gallery.css", api)
+    custom = ""
+    if style.exists():
+        (output / "gallery.css").write_text(gallery_style(style, api), encoding="utf-8")
+        custom = '<link rel="stylesheet" href="gallery.css">'
+    document = (api.ASSETS / "gallery.html").read_text(encoding="utf-8")
+    document = document.replace("<!-- GALLERY_STYLE -->", custom)
+    document = document.replace("<!-- DRAFT_NOTICE -->", '<p class="draft-notice" role="status">DRAFT / 검증 전 로컬 미리보기</p>' if drafts else "")
     (output / "index.html").write_text(document.replace("CATALOG_DATA", data), encoding="utf-8")
     (output / "catalog.json").write_text(api.dump_json(listing), encoding="utf-8")
     (output / ".nojekyll").write_text("", encoding="utf-8")
@@ -366,8 +383,9 @@ def publish(args, workspace, data, api):
     metadata, _ = api.validate_entry(source, public=True)
     api.require(metadata["status"] == "ready", "Publish requires status=ready; draft references are excluded from public builds.")
     files = public_files(source, metadata, api)
+    style = gallery_style(Path(args.gallery_style).expanduser().absolute(), api) if args.gallery_style else None
     repo = repo_name(workspace, data["remote_name"], api)
-    plan = {"stage": "plan", "repository": repo, "entry": metadata["id"], "files": files, "merge_requested": args.merge}
+    plan = {"stage": "plan", "repository": repo, "entry": metadata["id"], "files": files, "merge_requested": args.merge, "gallery_style": "gallery.css" if style is not None else None}
     if not args.apply:
         return plan
     repository = github_json(repo, "")
@@ -391,6 +409,9 @@ def publish(args, workspace, data, api):
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source / relative, destination)
         managed = install_bundle(worktree, default_branch, api)
+        if style is not None:
+            managed_path(worktree, "gallery.css", api).write_text(style, encoding="utf-8")
+            managed.append("gallery.css")
         built = build_site(worktree, run / "site", api)
         api.require(metadata["id"] in built["entries"], "Local build omitted the requested entry.")
         progress("local-build", f"{metadata['id']}: {built['files']} files")

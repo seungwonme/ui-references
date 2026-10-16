@@ -1,14 +1,15 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "files": {
-    ".reference-ui/scripts/reference-ui.py": "599852e5a925a6e85dd79e017fbeec967e7eecc943088fbd4b387bda08b217e7",
-    ".reference-ui/scripts/gallery.py": "3c914fc2a3eec9c0be0ec90ed0b57902adef904749b937557096e2c54e66c234",
+    ".reference-ui/scripts/reference-ui.py": "cf11ee2f1f505a48b1c1a6519558e32eb857027c6a31f24ae866c11c344755fa",
+    ".reference-ui/scripts/gallery.py": "afacd1e227e8774d80272112b6547b0f2062f5fd4eb0eb38bd296ce249a568b9",
     ".reference-ui/assets/config.example.json": "16c4ee45e11702fa2d84332aa051f3da35afd52746602481d8849230a971c7b9",
     ".reference-ui/assets/reference-template.json": "f759b6f05663038bbfc7ced82c3d54ca1f383537f121693bf1755cf5d5305032",
     ".reference-ui/assets/tokens-template.json": "a6e2c4bcbd26aa9d7ef2c42b50e046f1b43c811db7d931c2913c860d9fc0195c",
     ".reference-ui/assets/design-template.md": "8170b5752859e4c4a7cd484fad304dafe863b64716fd6ff406dbc84e9a69aa21",
-    ".reference-ui/assets/gallery.css": "2ead349d22060c9cfc40867a9809c389d1aecea476f200c520e235f9547366a2",
-    ".reference-ui/assets/gallery.js": "fb5f6f8d62e62b97215c0cb8a85ef488e31d22fcb10e1997a2093b04ff409056",
+    ".reference-ui/assets/gallery.html": "1c3f126195b0b2cf1fd2f5032991f4c9cccbe21a9b3e7fc33ac91a90569e97f5",
+    ".reference-ui/assets/gallery.css": "a6b15a3dce6a40e7de6411c3d6cb5085e34b8fb949ce2fe10b10ca64af5d6ab7",
+    ".reference-ui/assets/gallery.js": "7e8d29d70faba6ef540cc358c641043b82ebbfe248eef09e74fcb990bdcc82ab",
     ".reference-ui/assets/pages.yml": "2d98f04b4101f4ecc059a9c20471060a442198508a8199da3bafa1172c71ce42",
     "scripts/gallery.py": "3c99addfc4999ca26b9513c6960057f553c25408c1fd3ab0bfa075630ba827d8",
     ".github/workflows/pages.yml": "71fa672189d59a92e82aa07daacf44e87741850aa042af1cf2238a60f0c8775f"

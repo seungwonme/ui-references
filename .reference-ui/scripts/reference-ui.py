@@ -416,6 +416,7 @@ def parser():
     build.add_argument("--drafts", action="store_true", help="Local-only preview with an explicit draft label; rejected inside GitHub Actions")
     publish = commands.add_parser("publish", help="Plan or create a reviewed entry PR, then optionally merge and verify Pages")
     publish.add_argument("source", help="Directory of a ready reference package with an explicit public file list")
+    publish.add_argument("--gallery-style", help="Reviewed CSS to store as repo-owned gallery.css; assets must already be publicly exported")
     publish.add_argument("--apply", action="store_true")
     publish.add_argument("--merge", action="store_true", help="Merge only after the PR build passes; requires authorization")
     publish.add_argument("--timeout", type=int, default=300, help="Seconds allowed for each asynchronous CI/Pages wait")
