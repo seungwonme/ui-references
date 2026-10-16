@@ -16,12 +16,19 @@ import time
 from urllib.parse import unquote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
-VERSION = "0.3.1"
+VERSION = "0.4.0"
 WORKFLOW = "UI reference pages"
+PROJECT_SKILL_NAME = "reference-ui-gallery"
+PROJECT_SKILL_ROOT = ".agents/skills/" + PROJECT_SKILL_NAME
 RUNTIME_FILES = (
     "scripts/reference-ui.py", "scripts/gallery.py", "assets/config.example.json",
     "assets/reference-template.json", "assets/tokens-template.json", "assets/design-template.md",
     "assets/gallery.html", "assets/gallery.css", "assets/gallery.js", "assets/pages.yml",
+)
+SKILL_FILES = RUNTIME_FILES + (
+    "SKILL.md", "README.md", "references/setup.md", "references/extraction.md",
+    "references/package-contract.md", "references/gallery-and-reuse.md",
+    "tests/test_reference_ui.py", "tests/eval-cases.json", "tests/eval-report.md",
 )
 
 
@@ -244,18 +251,40 @@ def build_site(workspace, output, api, drafts=False):
     return {"output": str(output), "entries": manifest["entries"], "commit": commit, "files": len(manifest["files"]) + 1}
 
 
-def install_bundle(worktree, default_branch, api):
+def project_skill_file(relative, api):
+    source = managed_path(api.SKILL_ROOT, relative, api)
+    api.require(source.is_file(), "Project skill export requires the complete skill package; run publish from the installed full skill, not a minimal CI runtime.")
+    content = source.read_text(encoding="utf-8")
+    if relative == "SKILL.md" and "\nname: reference-ui\n" in content:
+        content = content.replace("\nname: reference-ui\n", "\nname: " + PROJECT_SKILL_NAME + "\n", 1)
+        content = content.replace('description: "', 'description: "이 갤러리 저장소에서 ', 1)
+    elif relative == "README.md":
+        content = content.replace("# reference-ui\n", "# " + PROJECT_SKILL_NAME + "\n", 1)
+    elif relative == "tests/eval-cases.json":
+        data = json.loads(content)
+        data["skill_name"] = PROJECT_SKILL_NAME
+        content = api.dump_json(data)
+    return content.encode("utf-8")
+
+
+def install_bundle(worktree, default_branch, api, project_skill=False):
     api.require(re.fullmatch(r"[A-Za-z0-9._/-]+", default_branch), "Default branch name cannot be embedded safely in the workflow template.")
     generated = {}
     for relative in RUNTIME_FILES:
         generated[".reference-ui/" + relative] = (api.SKILL_ROOT / relative).read_bytes()
+    project_skill = project_skill or (worktree / PROJECT_SKILL_ROOT / "SKILL.md").exists()
+    if project_skill:
+        for relative in SKILL_FILES:
+            generated[PROJECT_SKILL_ROOT + "/" + relative] = project_skill_file(relative, api)
     wrapper = '''#!/usr/bin/env python3
 import runpy
 import sys
 from pathlib import Path
 sys.dont_write_bytecode = True
 root = Path(__file__).resolve().parents[1]
-runner = root / ".reference-ui/scripts/reference-ui.py"
+runner = root / ".agents/skills/reference-ui-gallery/scripts/reference-ui.py"
+if not runner.is_file():
+    runner = root / ".reference-ui/scripts/reference-ui.py"
 sys.path.insert(0, str(runner.parent))
 sys.argv = [str(runner), "--workspace", str(root), *sys.argv[1:]]
 runpy.run_path(str(runner), run_name="__main__")
@@ -272,7 +301,7 @@ runpy.run_path(str(runner), run_name="__main__")
         target = worktree / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(data)
-    manifest_path.write_text(api.dump_json({"version": VERSION, "files": {name: hashlib.sha256(data).hexdigest() for name, data in generated.items()}}), encoding="utf-8")
+    manifest_path.write_text(api.dump_json({"version": VERSION, "project_skill": PROJECT_SKILL_NAME if project_skill else None, "files": {name: hashlib.sha256(data).hexdigest() for name, data in generated.items()}}), encoding="utf-8")
     return list(generated) + [".reference-ui/bundle.json"]
 
 
@@ -386,6 +415,7 @@ def publish(args, workspace, data, api):
     style = gallery_style(Path(args.gallery_style).expanduser().absolute(), api) if args.gallery_style else None
     repo = repo_name(workspace, data["remote_name"], api)
     plan = {"stage": "plan", "repository": repo, "entry": metadata["id"], "files": files, "merge_requested": args.merge, "gallery_style": "gallery.css" if style is not None else None}
+    plan["project_skill"] = PROJECT_SKILL_NAME if args.project_skill or (workspace / PROJECT_SKILL_ROOT / "SKILL.md").exists() else None
     if not args.apply:
         return plan
     repository = github_json(repo, "")
@@ -408,7 +438,7 @@ def publish(args, workspace, data, api):
             destination = api.safe_path(target, relative)
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source / relative, destination)
-        managed = install_bundle(worktree, default_branch, api)
+        managed = install_bundle(worktree, default_branch, api, project_skill=args.project_skill)
         if style is not None:
             managed_path(worktree, "gallery.css", api).write_text(style, encoding="utf-8")
             managed.append("gallery.css")
