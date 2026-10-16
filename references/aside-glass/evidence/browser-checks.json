@@ -1,0 +1,184 @@
+{
+  "checks": [
+    {
+      "label": "empty send disabled",
+      "pass": true
+    },
+    {
+      "label": "common glass blur 8px",
+      "pass": true
+    },
+    {
+      "label": "sidebar width 280px",
+      "pass": true
+    },
+    {
+      "label": "input enables send",
+      "pass": true
+    },
+    {
+      "label": "loading shown",
+      "pass": true
+    },
+    {
+      "label": "error keeps input",
+      "pass": true
+    },
+    {
+      "label": "retry returns to loading",
+      "pass": true
+    },
+    {
+      "label": "variant B and URL",
+      "pass": true
+    },
+    {
+      "label": "variant C",
+      "pass": true
+    },
+    {
+      "label": "liquid layers exist",
+      "pass": true
+    },
+    {
+      "label": "dark liquid base tint",
+      "pass": true
+    },
+    {
+      "label": "flat surface",
+      "pass": true
+    },
+    {
+      "label": "responsive 390",
+      "pass": true
+    },
+    {
+      "label": "mobile menu blocks background focus",
+      "pass": true
+    },
+    {
+      "label": "mobile menu restores focus",
+      "pass": true
+    },
+    {
+      "label": "responsive 768",
+      "pass": true
+    },
+    {
+      "label": "responsive 1280",
+      "pass": true
+    },
+    {
+      "label": "chat console clean",
+      "pass": true
+    },
+    {
+      "label": "settings save initially disabled",
+      "pass": true
+    },
+    {
+      "label": "settings change updates UI",
+      "pass": true
+    },
+    {
+      "label": "settings loading state",
+      "pass": true
+    },
+    {
+      "label": "settings error preserves edits",
+      "pass": true
+    },
+    {
+      "label": "settings retry success",
+      "pass": true
+    },
+    {
+      "label": "reduced motion control",
+      "pass": true
+    },
+    {
+      "label": "settings reset",
+      "pass": true
+    },
+    {
+      "label": "settings responsive 390",
+      "pass": true
+    },
+    {
+      "label": "settings responsive 768",
+      "pass": true
+    },
+    {
+      "label": "settings responsive 1280",
+      "pass": true
+    },
+    {
+      "label": "settings labels",
+      "pass": true
+    },
+    {
+      "label": "settings console clean",
+      "pass": true
+    },
+    {
+      "label": "gallery has one reference",
+      "pass": true
+    },
+    {
+      "label": "gallery search empty state",
+      "pass": true
+    },
+    {
+      "label": "gallery search matches",
+      "pass": true
+    },
+    {
+      "label": "gallery resource /references/aside-glass/index.html",
+      "pass": true
+    },
+    {
+      "label": "gallery resource /references/aside-glass/index.html",
+      "pass": true
+    },
+    {
+      "label": "gallery resource /references/aside-glass/DESIGN.md",
+      "pass": true
+    },
+    {
+      "label": "gallery resource /references/aside-glass/tokens.json",
+      "pass": true
+    },
+    {
+      "label": "gallery resource /references/aside-glass/reference.json",
+      "pass": true
+    },
+    {
+      "label": "gallery console clean",
+      "pass": true
+    }
+  ],
+  "responsive": [
+    {
+      "width": 390,
+      "overflow": false,
+      "editor": true,
+      "sendBottom": 718.0546875,
+      "height": 844
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "editor": true,
+      "sendBottom": 718.0546875,
+      "height": 844
+    },
+    {
+      "width": 1280,
+      "overflow": false,
+      "editor": true,
+      "sendBottom": 716.6015625,
+      "height": 844
+    }
+  ],
+  "source": "public reconstruction in Aside Chromium; native pixel equality unverified"
+}
