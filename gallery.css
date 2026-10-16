@@ -1,0 +1,32 @@
+/* Gallery theme: Aside design study. The layout is a new application of the
+   extracted system, not an original Aside screen. Font/photo attribution:
+   references/aside-glass/ATTRIBUTION.md. Values come from tokens.json.
+   Text contrast over the replacement forest photo is adjusted for the gallery. */
+@import url("references/aside-glass/assets/tokens.css");
+@font-face {
+  font-family: "Geist Variable";
+  src: url("references/aside-glass/assets/geist.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root, :root.dark {
+  --g-bg: var(--background);
+  --g-fg: var(--foreground);
+  --g-muted: color-mix(in oklab,var(--foreground) 72%,var(--background));
+  --g-line: var(--border);
+  --g-surface: var(--background);
+  --g-selected: var(--accent);
+  --g-primary: var(--primary);
+  --g-on-primary: var(--primary-foreground);
+  --g-focus: var(--brand);
+  --g-font: var(--font-sans);
+  --g-unit: var(--spacing);
+  --g-radius: var(--radius-lg);
+  --g-panel-radius: var(--radius-2xl);
+  --g-blur: var(--glass-blur);
+  --g-sidebar: var(--sidebar-width);
+  --g-inner: var(--glass-inner-border);
+  --g-outer: var(--glass-outer-ring);
+}
+/* Keep the URL at its use site: CSS variables resolve URLs in the consuming stylesheet. */
+body::before { background-image: url("references/aside-glass/assets/forest.jpg"); }
