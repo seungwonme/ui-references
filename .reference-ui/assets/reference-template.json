@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "",
+  "title": "",
+  "status": "draft",
+  "platforms": [],
+  "tags": [],
+  "preview": "index.html",
+  "thumbnail": "",
+  "sources": [
+    {
+      "id": "source-1",
+      "location": "",
+      "version": "",
+      "method": ""
+    }
+  ],
+  "evidence": [],
+  "prototype": {
+    "stack": "",
+    "reason": "",
+    "run": ""
+  },
+  "verification": {
+    "new_screen": {
+      "status": "not-run",
+      "evidence": [],
+      "reason": ""
+    },
+    "visual": {
+      "status": "not-run",
+      "evidence": [],
+      "reason": ""
+    },
+    "states": {
+      "status": "not-run",
+      "evidence": [],
+      "reason": ""
+    },
+    "responsive": {
+      "status": "not-run",
+      "evidence": [],
+      "reason": ""
+    },
+    "accessibility": {
+      "status": "not-run",
+      "evidence": [],
+      "reason": ""
+    }
+  },
+  "publication": {
+    "review": "pending",
+    "rights": "unreviewed",
+    "notes": "",
+    "files": []
+  }
+}

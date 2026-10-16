@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "aside-glass",
+  "title": "Aside / Glass workspace",
+  "status": "ready",
+  "platforms": [
+    "desktop",
+    "web"
+  ],
+  "tags": [
+    "glassmorphism",
+    "sidebar",
+    "chat",
+    "light-dark",
+    "source-study"
+  ],
+  "preview": "index.html",
+  "thumbnail": "preview.png",
+  "sources": [
+    {
+      "id": "aside",
+      "location": "https://aside.com",
+      "version": "1.0.928.1",
+      "method": "Installed CSS and JavaScript declarations, REA static analysis, browser reconstruction. Native pixel equality is unverified."
+    },
+    {
+      "id": "font",
+      "location": "https://github.com/vercel/geist-font",
+      "version": "upstream retrieved for this study",
+      "method": "OFL-licensed variable webfont"
+    },
+    {
+      "id": "background",
+      "location": "https://unsplash.com/photos/photography-of-pine-trees-covered-with-fogs-vpAKO21abME",
+      "version": "Patrick Fore",
+      "method": "Unsplash License; replacement for the unverified bundled forest asset"
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "observed",
+      "source_id": "aside",
+      "locator": "evidence/extraction.json: extraction.tokens, component_facts",
+      "finding": "83 source token declarations and 37 component observations are preserved as analysis data, with theme fallbacks collapsed in the typed projection."
+    },
+    {
+      "kind": "observed",
+      "source_id": "aside",
+      "locator": "evidence/extraction.json: glass.common_glass",
+      "finding": "Common glass uses 80 percent surface fill, 8px blur, 1px inner border and 0.5px outer ring."
+    },
+    {
+      "kind": "proposed",
+      "source_id": "aside",
+      "locator": "settings.html",
+      "finding": "Settings screen reuses typography, density and surface rules. It is a new screen, not a recovered original Aside settings screen."
+    },
+    {
+      "kind": "proposed",
+      "source_id": "background",
+      "locator": "tokens.json: dark.liquid-base",
+      "finding": "Dark base tint added after visual review to keep text legible over the replacement photo."
+    }
+  ],
+  "prototype": {
+    "stack": "Static HTML/CSS/JavaScript",
+    "reason": "The reference tests visual grammar and local UI states, so a backend or framework is unnecessary. This choice does not constrain future projects.",
+    "run": "From the gallery checkout: python3 scripts/gallery.py build --output <empty-output>, then serve that output with python3 -m http.server.",
+    "token_css": "assets/tokens.css"
+  },
+  "verification": {
+    "new_screen": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md",
+        "evidence/settings-desktop.png"
+      ],
+      "reason": "New settings screen implemented and exercised with the same generated token CSS."
+    },
+    "visual": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md",
+        "preview.png"
+      ],
+      "reason": "Source-declaration fidelity and browser rendering reviewed; native pixel equality remains unverified."
+    },
+    "states": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md"
+      ],
+      "reason": "Empty/loading/error/retry and settings save/error/retry/reset exercised."
+    },
+    "responsive": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md"
+      ],
+      "reason": "390/768/1280 CSS px emulated viewports; no horizontal overflow. Physical mobile devices untested."
+    },
+    "accessibility": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md"
+      ],
+      "reason": "Labels, mobile focus isolation/restoration, and reduced-motion control checked; not a full WCAG audit."
+    }
+  },
+  "publication": {
+    "review": "approved",
+    "rights": "cleared",
+    "notes": "Independent UI study and authored reconstruction. No app binaries or original bundled wallpaper. Geist is distributed with SIL OFL; replacement forest photo by Patrick Fore is used under Unsplash License. Source product name is attribution, not an affiliation claim.",
+    "files": [
+      "ATTRIBUTION.md",
+      "DESIGN.md",
+      "assets/OFL.txt",
+      "assets/forest.jpg",
+      "assets/geist.woff2",
+      "evidence/browser-checks.json",
+      "evidence/chat-mobile.png",
+      "evidence/extraction.json",
+      "evidence/settings-desktop.png",
+      "evidence/settings-mobile.png",
+      "evidence/verification.md",
+      "index.html",
+      "preview.png",
+      "reference.json",
+      "settings.html",
+      "tokens.json"
+    ]
+  }
+}
