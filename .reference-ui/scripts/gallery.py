@@ -16,7 +16,7 @@ import time
 from urllib.parse import unquote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 WORKFLOW = "UI reference pages"
 RUNTIME_FILES = (
     "scripts/reference-ui.py", "scripts/gallery.py", "assets/config.example.json",

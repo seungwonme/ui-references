@@ -1,7 +1,7 @@
-/* Gallery theme: Aside design study. The layout is a new application of the
-   extracted system, not an original Aside screen. Font/photo attribution:
-   references/aside-glass/ATTRIBUTION.md. Values come from tokens.json.
-   Text contrast over the replacement forest photo is adjusted for the gallery. */
+/* Gallery theme adapted from the Aside design system.
+   Typography, semantic colors and component tokens come from the reference.
+   Layout and surfaces serve browsing a collection. Font attribution:
+   references/aside-glass/ATTRIBUTION.md. */
 @import url("references/aside-glass/assets/tokens.css");
 @font-face {
   font-family: "Geist Variable";
@@ -10,7 +10,7 @@
   font-display: swap;
 }
 :root, :root.dark {
-  --g-bg: var(--background);
+  --g-bg: color-mix(in oklab,var(--background) 97%,var(--foreground));
   --g-fg: var(--foreground);
   --g-muted: color-mix(in oklab,var(--foreground) 72%,var(--background));
   --g-line: var(--border);
@@ -24,9 +24,30 @@
   --g-radius: var(--radius-lg);
   --g-panel-radius: var(--radius-2xl);
   --g-blur: var(--glass-blur);
-  --g-sidebar: var(--sidebar-width);
+  --g-sidebar: calc(var(--spacing) * 60);
   --g-inner: var(--glass-inner-border);
   --g-outer: var(--glass-outer-ring);
 }
-/* Keep the URL at its use site: CSS variables resolve URLs in the consuming stylesheet. */
-body::before { background-image: url("references/aside-glass/assets/forest.jpg"); }
+
+/* A neutral collection canvas keeps the reference images in focus. */
+body::before { content: none; background-image: none; }
+.app-shell { padding: 0; gap: 0; max-width: none; }
+:root .sidebar, :root .workspace {
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+:root .sidebar { background: var(--g-surface); border-right: var(--hairline) solid var(--g-line); }
+:root .workspace { background: var(--g-bg); }
+.sidebar-note { display: none; }
+#material { display: none; }
+.heading { margin-bottom: 32px; }
+h1 { font-size: 26px; letter-spacing: -.8px; }
+:root .reference { background: var(--g-surface); box-shadow: none; border: var(--hairline) solid var(--g-line); }
+:root .topbar { background: var(--g-surface); }
+@media (max-width:760px) {
+  :root .sidebar { border-right: 0; border-bottom: var(--hairline) solid var(--g-line); }
+  .app-shell { grid-template-columns: 1fr; }
+  h1 { font-size: 24px; }
+}
