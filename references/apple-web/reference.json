@@ -40,7 +40,7 @@
   "prototype": {
     "stack": "Static HTML/CSS/JavaScript",
     "reason": "An inspectable gallery package with local synthetic state needs no framework/backend. This choice does not prescribe a future product stack.",
-    "run": "python3 scripts/gallery.py build --output <empty-directory>; serve the output with python3 -m http.server",
+    "run": "uv --no-config run --locked --script scripts/gallery.py build --output <empty-directory>; serve the output with python3 -m http.server",
     "token_css": "assets/tokens.css"
   },
   "verification": {

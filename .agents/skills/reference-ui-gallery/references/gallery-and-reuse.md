@@ -38,10 +38,10 @@
 5. 리뷰 후 머지까지 이미 승인받았다면 같은 호출에 `--merge`를 붙인다. 이 옵션은 PR의 해당 commit 빌드가 성공했을 때만 머지한다. main의 Pages 배포 후 실제 사이트의 build.json commit이 merge commit과 같은지 확인한다.
 6. 중단된 실행은 출력된 receipt와 PR을 읽고 `finish --pr <number> --apply`로 이어간다. 머지도 승인됐으면 `--merge`를 붙인다. 같은 항목을 새 PR로 중복 발행하지 않는다.
 
-생성된 저장소에서는 `python3 scripts/gallery.py build --output <new-empty-directory>`로 CI와 같은 빌드를 실행한다. 브라우저 검증은 이 산출물을 대상으로 한다. 검증 전 로컬 미리보기에는 build의 `--drafts`를 사용한다. 초안 표식을 붙이며 GitHub Actions 환경에서는 이 옵션을 거부한다. 래퍼는 프로젝트 스킬이 있으면 이를 우선 실행하고, 없으면 `.reference-ui/` 런타임을 실행한다. 버전과 hash는 `.reference-ui/bundle.json`에 기록하며 개인 스킬 경로를 참조하지 않는다. 생성 파일을 사용자가 수정했으면 자동 갱신을 멈추고 소유권을 확인한다.
+생성된 저장소에서는 `uv --no-config run --locked --script scripts/gallery.py build --output <new-empty-directory>`로 CI와 같은 빌드를 실행한다. 브라우저 검증은 이 산출물을 대상으로 한다. 검증 전 로컬 미리보기에는 build의 `--drafts`를 사용한다. 초안 표식을 붙이며 GitHub Actions 환경에서는 이 옵션을 거부한다. 래퍼는 프로젝트 스킬이 있으면 이를 우선 실행하고, 없으면 `.reference-ui/` 런타임을 실행한다. 버전과 hash는 `.reference-ui/bundle.json`에 기록하며 개인 스킬 경로를 참조하지 않는다. 생성 파일을 사용자가 수정했으면 자동 갱신을 멈추고 소유권을 확인한다.
 
 스킬도 저장소와 함께 배포할 때는 첫 `publish`에 `--project-skill`을 추가한다. `.agents/skills/reference-ui-gallery`에 본문, references, scripts, assets, tests 전체를 생성하고 이후 발행에서도 함께 갱신한다. 전역 이름과 구분해 기존 설치와의 충돌을 피한다. 최초 Claude/GJC 연결은 사용 가능한 스킬 설치기의 프로젝트 설치 절차로 처리한다. 개인 설정과 다른 스킬은 포함하지 않는다.
 
-Pages workflow는 PR에서 검증과 빌드를 하고 원격 기본 브랜치에서만 배포한다. Python 표준 라이브러리와 공식 GitHub Actions를 사용한다. 빌더는 검토 완료 항목의 명시된 파일만 내보내고 링크, 경로 이탈, 로컬 경로, 자격증명 표식을 검사한다. 검사 통과가 시각 검증이나 재배포 권리 판단을 대신하지 않는다.
+Pages workflow는 PR에서 검증과 빌드를 하고 원격 기본 브랜치에서만 배포한다. 잠금 파일로 고정한 Python 환경과 공식 GitHub Actions를 사용한다. 빌더는 검토 완료 항목의 명시된 파일만 내보내고 링크, 경로 이탈, 로컬 경로, 자격증명 표식을 검사한다. 검사 통과가 시각 검증이나 재배포 권리 판단을 대신하지 않는다.
 
 미리보기용 HTML 하나로 묶어 배포해도 디자인 시스템 정본 파일은 저장소에 유지한다. 네이티브 앱의 스크린샷/영상은 웹에서의 미리보기이며 네이티브 실행 검증으로 표시하지 않는다.

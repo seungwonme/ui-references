@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["jsonschema==4.26.0"]
+# ///
 """Reference packages, static gallery builds, and explicit GitHub publishing."""
 from __future__ import annotations
 
 import argparse
+from functools import lru_cache
+import importlib.util
 from contextlib import contextmanager
 import json
 import os
@@ -20,7 +26,6 @@ ASSETS = SKILL_ROOT / "assets"
 SLUG = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*\Z")
 CHECKS = ("new_screen", "visual", "states", "responsive", "accessibility")
 STATES = {"pass", "fail", "not-run", "not-applicable"}
-TOKEN_TYPES = {"color", "dimension", "fontFamily", "fontWeight", "duration", "cubicBezier", "number", "strokeStyle", "border", "transition", "shadow", "gradient", "typography"}
 
 
 class UserError(Exception):
@@ -247,57 +252,51 @@ def new_entry(args, workspace):
     return {"entry": str(root), "status": "draft", "created": list(contents), "next": "Fill rules and tokens, implement preview, record checks, then validate --ready."}
 
 
+@lru_cache(maxsize=1)
+def token_contract_module():
+    spec = importlib.util.spec_from_file_location("reference_ui_token_contract", SKILL_ROOT / "scripts/token-validation.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def token_nodes(document):
+    module = token_contract_module()
+    try:
+        return module.checked_tokens(document)
+    except module.TokenError as exc:
+        raise UserError(str(exc)) from None
+
+
 def validate_tokens(document):
-    tokens = {}
+    return len(token_nodes(document))
 
-    def collect(group, prefix="", inherited=None):
-        require(isinstance(group, dict), "Token groups must be JSON objects.")
-        require("$extends" not in group and "$ref" not in group, "This basic checker supports curly-brace aliases; use a full DTCG validator for $extends/$ref before adapting the checker.")
-        kind = group.get("$type", inherited)
-        if "$value" in group:
-            require(prefix, "A token must have a name.")
-            tokens[prefix] = (group["$value"], kind)
-            return
-        for key, value in group.items():
-            if key.startswith("$"):
-                continue
-            require(not any(character in key for character in ".{}") and bool(key), "Token names cannot contain dots or braces.")
-            collect(value, f"{prefix}.{key}" if prefix else key, kind)
 
-    collect(document)
-
-    def references(value):
-        if isinstance(value, str):
-            match = re.fullmatch(r"\{([^{}]+)\}", value)
-            return [match[1]] if match else []
-        if isinstance(value, dict):
-            require("$ref" not in value, "JSON Pointer references need a full DTCG validator; this checker only resolves curly-brace aliases.")
-            return [ref for item in value.values() for ref in references(item)]
-        if isinstance(value, list):
-            return [ref for item in value for ref in references(item)]
-        return []
-
-    resolved = {}
-
-    def visit(name, trail):
-        require(name in tokens, f"Missing token alias target: {name}")
-        require(name not in trail, f"Circular token alias involving: {name}")
-        if name in resolved:
-            return resolved[name]
-        value, kind = tokens[name]
-        refs = references(value)
-        target_types = [visit(ref, trail | {name}) for ref in refs]
-        whole_alias = isinstance(value, str) and re.fullmatch(r"\{[^{}]+\}", value)
-        effective = kind or (target_types[0] if whole_alias else None)
-        require(choice(effective, TOKEN_TYPES), f"Token {name} needs a supported $type (direct, inherited, or aliased).")
-        if whole_alias and kind:
-            require(kind == target_types[0], f"Token alias type mismatch: {name}")
-        resolved[name] = effective
-        return effective
-
-    for name in tokens:
-        visit(name, set())
-    return len(tokens)
+def check_environment(workspace):
+    tests = SKILL_ROOT / "tests"
+    require((tests / "test_token_contract.py").is_file(), "check needs the bundled token regression suite; regenerate an incomplete runtime through publish.")
+    full_suite = (tests / "test_reference_ui.py").is_file()
+    result = subprocess.run([sys.executable, "-B", "-m", "unittest", "discover", "-s", str(tests),
+                             "-p", "test*.py" if full_suite else "test_token_contract.py"], capture_output=True, text=True)
+    require(result.returncode == 0, "Regression tests failed:\n" + (result.stdout + result.stderr)[-3000:])
+    match = re.search(r"Ran (\d+) tests?", result.stderr)
+    require(match is not None and int(match[1]) > 0, "Regression suite ran zero tests; restore the reviewed test bundle.")
+    import gallery
+    package_checks = []
+    for item in catalog(workspace, include_drafts=True)["items"]:
+        root = entry_root(workspace, item["id"])
+        metadata, report = validate_entry(root)
+        css_path = metadata.get("prototype", {}).get("token_css")
+        if css_path:
+            gallery.token_css(load_json(root / "tokens.json"), sys.modules[__name__])
+        report["css_adapter"] = "pass" if css_path else "not-configured"
+        package_checks.append(report)
+    with tempfile.TemporaryDirectory(prefix="reference-ui-check-") as temporary:
+        build = gallery.build_site(workspace, Path(temporary) / "site", sys.modules[__name__])
+    build.pop("output", None)
+    build["temporary_output_removed"] = True
+    return {"regressions": {"status": "pass", "tests": int(match[1]), "suite": "full" if full_suite else "token-contract"},
+            "packages": package_checks, "build": build, "visual_qa": "not-run-by-this-command"}
 
 
 def validate_entry(root, ready=False, public=False):
@@ -356,7 +355,7 @@ def validate_entry(root, ready=False, public=False):
         require(isinstance(prototype, dict) and all(nonempty(prototype.get(key)) for key in ("stack", "reason", "run")), "Record prototype stack, selection reason, and run instructions.")
     if public:
         require(publication["review"] == "approved" and publication["rights"] == "cleared" and nonempty(publication.get("notes")), "Public catalog requires approved review, cleared rights, and review notes.")
-    return metadata, {"id": root.name, "tokens": count, "check": "ready-records" if ready else "draft-structure", "visual_quality": "not-automatically-assessed"}
+    return metadata, {"id": root.name, "tokens": count, "check": "ready-records" if ready else "draft-structure", "visual_quality": "not-automatically-assessed", "token_contract": token_contract_module().contract_info()}
 
 
 def catalog(workspace, include_drafts=False, public=False):
@@ -396,12 +395,13 @@ def parser():
         action.add_argument("--bootstrap-url", help="Credential-free clone/recovery URL; empty string clears it")
         action.add_argument("--remote-name")
     commands.add_parser("doctor", help="Read-only checkout and remote checks; URL values stay redacted")
+    commands.add_parser("check", help="Run isolated regressions, package/schema/alias/CSS checks and a temporary build; no publishing")
     create = commands.add_parser("new", help="Create a draft package without fabricating preview or passing evidence")
     create.add_argument("slug")
     create.add_argument("--title", required=True)
     create.add_argument("--source", required=True)
     create.add_argument("--platform", required=True, choices=("web", "mobile", "desktop"))
-    validate = commands.add_parser("validate", help="Check package records and basic token references, not visual correctness")
+    validate = commands.add_parser("validate", help="Check package records, pinned token schema and alias semantics; not visual correctness")
     validate.add_argument("slug")
     validate.add_argument("--ready", action="store_true", help="Require completed verification records and a preview")
     validate.add_argument("--public", action="store_true", help="Also require recorded publication and rights review")
@@ -451,6 +451,8 @@ def main(argv=None):
             require(info["bootstrap_comparison"] != "mismatch-or-unresolved", "Bootstrap URL and Git remotes differ or cannot be resolved; inspect doctor and Git settings before continuing.")
             if args.command == "new":
                 output = new_entry(args, workspace)
+            elif args.command == "check":
+                output = check_environment(workspace)
             elif args.command == "validate":
                 _, output = validate_entry(entry_root(workspace, args.slug), ready=args.ready, public=args.public)
             elif args.command == "catalog":

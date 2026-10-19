@@ -16,20 +16,22 @@ import time
 from urllib.parse import unquote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
-VERSION = "0.5.2"
+VERSION = "0.6.0"
 WORKFLOW = "UI reference pages"
 PROJECT_SKILL_NAME = "reference-ui-gallery"
 PROJECT_SKILL_ROOT = ".agents/skills/" + PROJECT_SKILL_NAME
 RUNTIME_FILES = (
-    "scripts/reference-ui.py", "scripts/gallery.py", "assets/config.example.json",
+    "scripts/reference-ui.py", "scripts/reference-ui.py.lock", "scripts/gallery.py", "scripts/token-validation.py",
+    "assets/dtcg-format.schema.json", "assets/dtcg-license.md", "assets/config.example.json",
     "assets/reference-template.json", "assets/tokens-template.json", "assets/design-template.md",
     "assets/gallery.html", "assets/gallery.css", "assets/gallery.js", "assets/pages.yml",
+    "tests/test_token_contract.py",
 )
 SKILL_FILES = RUNTIME_FILES + (
     "SKILL.md", "README.md", "references/setup.md", "references/extraction.md",
     "references/package-contract.md", "references/gallery-and-reuse.md",
     "references/rea-extraction.md", "references/taste-and-prototype.md",
-    "tests/test_reference_ui.py", "tests/eval-cases.json", "tests/eval-report.md",
+    "tests/test_reference_ui.py", "tests/token-contract-report.md", "tests/eval-cases.json", "tests/eval-report.md",
 )
 
 
@@ -135,16 +137,22 @@ def gallery_style(path, api):
 
 def token_css(document, api):
     """Opt-in CSS export for primitive tokens; source token values remain canonical."""
-    nodes = {}
-    def walk(group, prefix="", inherited=None):
-        kind = group.get("$type", inherited)
-        if "$value" in group:
-            nodes[prefix] = (group, kind)
-            return
-        for key, value in group.items():
-            if not key.startswith("$"):
-                walk(value, f"{prefix}.{key}" if prefix else key, kind)
-    walk(document)
+    validated = api.token_nodes(document)
+    nodes = {name: (node, kind) for name, (node, kind, _) in validated.items()}
+    generic_families = {"serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui",
+                        "ui-serif", "ui-sans-serif", "ui-monospace", "ui-rounded", "emoji", "math", "fangsong"}
+
+    def family(value):
+        if value.lower() in generic_families or value in {"-apple-system", "BlinkMacSystemFont"}:
+            return value
+        escaped = "".join("\\" + ch if ch in {'"', "\\"} else f"\\{ord(ch):x} " if ord(ch) < 32 or ord(ch) == 127 else ch for ch in value)
+        return '"' + escaped + '"'
+
+    def extension_for(node):
+        extension = node.get("$extensions", {}).get("reference-ui", {})
+        api.require(isinstance(extension, dict), "The reference-ui CSS extension must be an object.")
+        return extension
+
     def value_for(name, chain=()):
         api.require(name not in chain and name in nodes, "Cannot export an unresolved token alias.")
         node, kind = nodes[name]
@@ -152,10 +160,11 @@ def token_css(document, api):
         if isinstance(value, str) and re.fullmatch(r"\{[^{}]+\}", value):
             target = value[1:-1]
             target_node = nodes.get(target, ({}, None))[0]
-            css_name = target_node.get("$extensions", {}).get("reference-ui", {}).get("css_name")
-            if css_name:
+            css_name = extension_for(target_node).get("css_name")
+            if css_name and css_name != extension_for(node).get("css_name"):
                 return f"var({css_name})"
             return value_for(target, (*chain, name))
+        value = validated[name][2]
         if kind == "dimension" or kind == "duration":
             api.require(isinstance(value, dict) and isinstance(value.get("value"), (float, int)) and value.get("unit") in {"px", "rem", "ms", "s"}, f"Invalid dimension/duration for CSS export: {name}")
             return f'{value["value"]:g}{value["unit"]}'
@@ -167,19 +176,22 @@ def token_css(document, api):
             alpha = value.get("alpha", 1)
             return f'color(srgb {components} / {alpha})' if space == "srgb" else f'{space}({components} / {alpha})'
         if kind == "fontFamily":
-            return ",".join(json.dumps(v) for v in value) if isinstance(value, list) else json.dumps(value)
+            return ",".join(family(v) for v in value) if isinstance(value, list) else family(value)
         api.require(kind in {"number", "fontWeight"}, f"CSS exporter does not support this token type: {name}")
         api.require(isinstance(value, (int, float)) and not isinstance(value, bool), f"CSS numeric token needs a number: {name}")
         return str(value)
     rules = {}
+    declared = set()
     for name, (node, _) in nodes.items():
-        extension = node.get("$extensions", {}).get("reference-ui", {})
+        extension = extension_for(node)
         css_name = extension.get("css_name")
-        if not css_name:
+        if css_name is None:
             continue
-        api.require(re.fullmatch(r"--[a-zA-Z0-9_-]+", css_name), "Invalid CSS custom-property name.")
+        api.require(isinstance(css_name, str) and re.fullmatch(r"--[a-zA-Z0-9_-]+", css_name), "Invalid CSS custom-property name.")
         theme = extension.get("theme", "base")
-        api.require(theme in {"base", "light", "dark"}, "CSS token theme must be base, light, or dark.")
+        api.require(api.choice(theme, {"base", "light", "dark"}), "CSS token theme must be base, light, or dark.")
+        api.require((theme, css_name) not in declared, "Duplicate CSS custom-property name in one theme.")
+        declared.add((theme, css_name))
         rules.setdefault(theme, []).append(f"{css_name}:{value_for(name)};")
     selectors = {"base": ":root", "light": ":root,.light", "dark": ":root.dark,.dark"}
     return "/* Generated from tokens.json. */\n" + "\n".join(selectors[theme] + "{" + "".join(rules[theme]) + "}" for theme in ("base", "light", "dark") if theme in rules) + "\n"
@@ -278,6 +290,10 @@ def install_bundle(worktree, default_branch, api, project_skill=False):
         for relative in SKILL_FILES:
             generated[PROJECT_SKILL_ROOT + "/" + relative] = project_skill_file(relative, api)
     wrapper = '''#!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["jsonschema==4.26.0"]
+# ///
 import runpy
 import sys
 from pathlib import Path
@@ -291,6 +307,7 @@ sys.argv = [str(runner), "--workspace", str(root), *sys.argv[1:]]
 runpy.run_path(str(runner), run_name="__main__")
 '''
     generated["scripts/gallery.py"] = wrapper.encode()
+    generated["scripts/gallery.py.lock"] = (api.SKILL_ROOT / "scripts/reference-ui.py.lock").read_bytes()
     generated[".github/workflows/pages.yml"] = (api.ASSETS / "pages.yml").read_text().replace("DEFAULT_BRANCH", default_branch).encode()
     manifest_path = managed_path(worktree, ".reference-ui/bundle.json", api)
     previous = api.load_json(manifest_path).get("files", {}) if manifest_path.exists() else {}

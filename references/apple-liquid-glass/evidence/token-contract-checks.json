@@ -1,0 +1,314 @@
+{
+  "candidate_version": "0.6.0",
+  "numeric_native_values": "unchanged",
+  "native_units": "logical pt preserved in namespaced extension",
+  "token_count": 57,
+  "schema_sha256": "32e93b780e4e4bca778d0780cb797a560deedc470c608af16576223f7e42915f",
+  "source_tokens_sha256": "2267aafebcc1f08e8c60ea6af543345ab5ea6b0fc3b3279ec4e531c595efcbef",
+  "browser": {
+    "checks": [
+      {
+        "entry": "aside-glass",
+        "width": 390,
+        "baseline": {
+          "font": "\"Geist Variable\", Geist, \"sans-serif\"",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "새 대화",
+              "width": 39.734375,
+              "height": 20.296875
+            },
+            {
+              "text": "원본에서 무엇을 가져왔나요?",
+              "width": 0,
+              "height": 0
+            }
+          ],
+          "errors": []
+        },
+        "site": {
+          "font": "\"Geist Variable\", Geist, sans-serif",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "새 대화",
+              "width": 39.734375,
+              "height": 20.296875
+            },
+            {
+              "text": "원본에서 무엇을 가져왔나요?",
+              "width": 0,
+              "height": 0
+            }
+          ],
+          "errors": []
+        },
+        "pass": true
+      },
+      {
+        "entry": "aside-glass",
+        "width": 1440,
+        "baseline": {
+          "font": "\"Geist Variable\", Geist, \"sans-serif\"",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "새 대화",
+              "width": 39.734375,
+              "height": 20.296875
+            },
+            {
+              "text": "원본에서 무엇을 가져왔나요?",
+              "width": 0,
+              "height": 0
+            }
+          ],
+          "errors": []
+        },
+        "site": {
+          "font": "\"Geist Variable\", Geist, sans-serif",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "새 대화",
+              "width": 39.734375,
+              "height": 20.296875
+            },
+            {
+              "text": "원본에서 무엇을 가져왔나요?",
+              "width": 0,
+              "height": 0
+            }
+          ],
+          "errors": []
+        },
+        "pass": true
+      },
+      {
+        "entry": "apple-web",
+        "width": 390,
+        "baseline": {
+          "font": "system-ui, -apple-system, \"system-ui\", \"Helvetica Neue\", Arial, \"sans-serif\"",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "A home foryour next good idea.",
+              "width": 342,
+              "height": 72
+            },
+            {
+              "text": "Space to think.Less in the way.",
+              "width": 342,
+              "height": 72
+            },
+            {
+              "text": "Make roomfor what matters.",
+              "width": 342,
+              "height": 72
+            },
+            {
+              "text": "A little more context.",
+              "width": 342,
+              "height": 36
+            }
+          ],
+          "errors": []
+        },
+        "site": {
+          "font": "system-ui, -apple-system, \"system-ui\", \"Helvetica Neue\", Arial, sans-serif",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "A home foryour next good idea.",
+              "width": 342,
+              "height": 72
+            },
+            {
+              "text": "Space to think.Less in the way.",
+              "width": 342,
+              "height": 72
+            },
+            {
+              "text": "Make roomfor what matters.",
+              "width": 342,
+              "height": 72
+            },
+            {
+              "text": "A little more context.",
+              "width": 342,
+              "height": 36
+            }
+          ],
+          "errors": []
+        },
+        "pass": true
+      },
+      {
+        "entry": "apple-web",
+        "width": 1440,
+        "baseline": {
+          "font": "system-ui, -apple-system, \"system-ui\", \"Helvetica Neue\", Arial, \"sans-serif\"",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "A home foryour next good idea.",
+              "width": 840,
+              "height": 136
+            },
+            {
+              "text": "Space to think.Less in the way.",
+              "width": 760,
+              "height": 104.015625
+            },
+            {
+              "text": "Make roomfor what matters.",
+              "width": 760,
+              "height": 104.015625
+            },
+            {
+              "text": "A little more context.",
+              "width": 760,
+              "height": 52.0078125
+            }
+          ],
+          "errors": []
+        },
+        "site": {
+          "font": "system-ui, -apple-system, \"system-ui\", \"Helvetica Neue\", Arial, sans-serif",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "A home foryour next good idea.",
+              "width": 840,
+              "height": 136
+            },
+            {
+              "text": "Space to think.Less in the way.",
+              "width": 760,
+              "height": 104.015625
+            },
+            {
+              "text": "Make roomfor what matters.",
+              "width": 760,
+              "height": 104.015625
+            },
+            {
+              "text": "A little more context.",
+              "width": 760,
+              "height": 52.0078125
+            }
+          ],
+          "errors": []
+        },
+        "pass": true
+      },
+      {
+        "entry": "apple-liquid-glass",
+        "width": 390,
+        "baseline": {
+          "font": "system-ui, -apple-system, \"system-ui\", \"Helvetica Neue\", Arial, \"sans-serif\"",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "Quiet content.Fluid controls.",
+              "width": 358,
+              "height": 64.953125
+            },
+            {
+              "text": "All notes",
+              "width": 179.578125,
+              "height": 42
+            },
+            {
+              "text": "",
+              "width": 0,
+              "height": 0
+            }
+          ],
+          "errors": []
+        },
+        "site": {
+          "font": "system-ui, -apple-system, \"system-ui\", \"Helvetica Neue\", Arial, sans-serif",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "Quiet content.Fluid controls.",
+              "width": 358,
+              "height": 64.953125
+            },
+            {
+              "text": "All notes",
+              "width": 179.578125,
+              "height": 42
+            },
+            {
+              "text": "",
+              "width": 0,
+              "height": 0
+            }
+          ],
+          "errors": []
+        },
+        "pass": true
+      },
+      {
+        "entry": "apple-liquid-glass",
+        "width": 1440,
+        "baseline": {
+          "font": "system-ui, -apple-system, \"system-ui\", \"Helvetica Neue\", Arial, \"sans-serif\"",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "Quiet content.Fluid controls.",
+              "width": 541.5,
+              "height": 83.515625
+            },
+            {
+              "text": "All notes",
+              "width": 179.578125,
+              "height": 42
+            },
+            {
+              "text": "",
+              "width": 0,
+              "height": 0
+            }
+          ],
+          "errors": []
+        },
+        "site": {
+          "font": "system-ui, -apple-system, \"system-ui\", \"Helvetica Neue\", Arial, sans-serif",
+          "overflow": false,
+          "headings": [
+            {
+              "text": "Quiet content.Fluid controls.",
+              "width": 541.5,
+              "height": 83.515625
+            },
+            {
+              "text": "All notes",
+              "width": 179.578125,
+              "height": 42
+            },
+            {
+              "text": "",
+              "width": 0,
+              "height": 0
+            }
+          ],
+          "errors": []
+        },
+        "pass": true
+      }
+    ],
+    "consoleErrors": [],
+    "visualScope": "font and layout regression at 390 and 1440 CSS px; interaction QA not rerun"
+  },
+  "limits": [
+    "No full interaction QA rerun",
+    "No native optical fidelity test",
+    "No Google DESIGN.md compatibility claim",
+    "Mobile screenshot tiles were unreliable and excluded from visual acceptance; mobile results use DOM/computed-style measurements."
+  ]
+}

@@ -1,9 +1,13 @@
 ---
 name: reference-ui-gallery
 description: "이 갤러리 저장소에서 Extracts web/app UI into reusable design-system packages and maintains the reference gallery, including previews, homepage/themes and GitHub Pages publishing. Use for UI extraction, reference-package creation or verification, and gallery repository maintenance. Do not use for implementation-only reuse in a separate product, routine UI fixes, or non-UI binary analysis."
-compatibility: "Python 3.10+ and Git; GitHub CLI for repository setup and publication. Extraction and visual verification require a suitable browser, app inspector, or user-provided captures."
+compatibility: "Python 3.10+, uv and Git; GitHub CLI for repository setup and publication. Extraction and visual verification require a suitable browser, app inspector, or user-provided captures."
 metadata:
-  version: "0.5.2"
+  version: "0.6.0"
+  requires:
+    - tool: uv
+      check: uv --version
+      install: brew install uv
 ---
 
 # Reference UI
@@ -13,6 +17,8 @@ metadata:
 대상은 결과물이 들어갈 저장소와 요청한 산출물로 구분한다. 준비된 디자인을 별도 제품 코드에 적용하기만 하는 작업은 구현 워크플로가 맡으며, 이 스킬의 설정/보관/발행 절차를 시작하지 않는다. 갤러리 저장소 자체를 바꾸는 작업은 이 본문의 전체 절차를 따른다.
 
 REA는 원본 분석, taste-skill은 용도에 맞는 시각 방향과 개선, Matt Pocock의 prototype은 화면 대안 비교를 맡는다. 아래 참조에서 실제 적용 경로를 고른다.
+
+실행 환경은 `uv --version`으로 확인한다. macOS에서 없으면 `brew install uv`로 설치한다. 다른 플랫폼은 uv의 공식 설치 방법을 사용한다. 의존성은 스크립트의 잠금 파일을 따른다.
 
 ## 먼저 읽을 것
 
@@ -33,7 +39,7 @@ REA는 원본 분석, taste-skill은 용도에 맞는 시각 방향과 개선, M
 4. 항목을 만들거나 바꾸면 산출물 계약에 맞춰 규칙/토큰과 프로토타입을 기록한다. 갤러리 화면/테마 수정은 [갤러리 관리](references/gallery-and-reuse.md#갤러리-관리)의 저장소 소유 파일과 생성물 경계를 따른다.
 5. 시각 방향이나 비교 질문이 있으면 [Taste와 prototype](references/taste-and-prototype.md)에서 목적에 맞는 절차를 고른다. 기존 스택을 존중하며 신규 스택은 요구와 검증 목적을 근거로 선택한다.
 6. 추출/재사용 패키지는 원본에 없던 새 화면과 관련 상태/크기를 확인한다. 갤러리 수정은 변경한 화면의 검색/필터/문서 링크와 관련 테마/화면 크기를 확인한다. 실제 렌더링으로 확인하지 못한 항목은 미검증으로 기록한다.
-7. 항목 변경은 `validate`로 검사하고 준비 완료 표시에는 `validate --ready`를 추가한다. 갤러리 빌드와 발행은 `build`, `publish`, `finish`를 사용한다. 승인 범위에 따라 PR, Actions, 실제 Pages URL 확인까지 이어간다.
+7. 항목 변경은 `validate`로 검사하고 준비 완료 표시에는 `validate --ready`를 추가한다. 검사기나 패키지 묶음을 바꾸면 `check`로 회귀 검사와 임시 빌드를 실행한다. 갤러리 빌드와 발행은 `build`, `publish`, `finish`를 사용한다. 승인 범위에 따라 PR, Actions, 실제 Pages URL 확인까지 이어간다.
 
 ## 작업 기준
 

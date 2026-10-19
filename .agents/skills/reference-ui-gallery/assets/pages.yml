@@ -15,10 +15,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: astral-sh/setup-uv@c97f06e356bcca1b426f396ef93ec35ce149ce7b # pinned setup-uv
       - name: Validate and build reviewed references
         run: |
-          python3 --version
-          python3 scripts/gallery.py build --output "$RUNNER_TEMP/reference-ui-site"
+          uv --no-config run --locked --script scripts/gallery.py check
+          uv --no-config run --locked --script scripts/gallery.py build --output "$RUNNER_TEMP/reference-ui-site"
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/DEFAULT_BRANCH'
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4

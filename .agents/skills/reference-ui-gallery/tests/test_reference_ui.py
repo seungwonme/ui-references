@@ -313,6 +313,22 @@ class ReferenceUiTest(unittest.TestCase):
         spec.loader.exec_module(gallery)
         return api, gallery
 
+    def test_minimal_runtime_check_runs_tests_and_rejects_zero_run(self):
+        self.public_ready()
+        api, gallery = self.bundle_modules()
+        gallery.install_bundle(self.repo, "main", api)
+        runner = self.repo / "scripts/gallery.py"
+        result = subprocess.run([sys.executable, str(runner), "check"], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["regressions"]["suite"], "token-contract")
+        self.assertGreater(report["regressions"]["tests"], 0)
+        self.assertTrue(report["build"]["temporary_output_removed"])
+        (self.repo / ".reference-ui/tests/test_token_contract.py").write_text("# Empty damaged test bundle\n", encoding="utf-8")
+        result = subprocess.run([sys.executable, str(runner), "check"], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertRegex(result.stderr, "zero tests|NO TESTS RAN")
+
     def test_exported_skill_and_bundle_share_release_version(self):
         api, gallery = self.bundle_modules()
         gallery.install_bundle(self.repo, "main", api, project_skill=True)
