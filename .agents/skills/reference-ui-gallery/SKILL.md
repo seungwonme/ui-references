@@ -1,14 +1,16 @@
 ---
 name: reference-ui-gallery
-description: "이 갤러리 저장소에서 웹/앱 UI를 역공학해 재사용할 디자인 시스템과 프로토타입으로 보관하고 레퍼런스 갤러리를 관리한다. Use for UI 추출, reference UI, 디자인 시스템 추출/재사용, 글래스모피즘 재현, UI reference gallery. Do not use for 일반 UI 구현/시각 QA만 요청하거나 UI와 무관한 바이너리 분석."
+description: "이 갤러리 저장소에서 Extracts web/app UI into reusable design-system packages and maintains the reference gallery, including previews, homepage/themes and GitHub Pages publishing. Use for UI extraction, reference-package creation or verification, and gallery repository maintenance. Do not use for implementation-only reuse in a separate product, routine UI fixes, or non-UI binary analysis."
 compatibility: "Python 3.10+ and Git; GitHub CLI for repository setup and publication. Extraction and visual verification require a suitable browser, app inspector, or user-provided captures."
 metadata:
-  version: "0.5.0"
+  version: "0.5.1"
 ---
 
 # Reference UI
 
-관찰한 UI에서 디자인 규칙을 추출하고, 새 화면에서도 재현되는지 검증해 외부 Git 저장소에 보관한다. `extract`, `reuse`, `gallery` 중 요청의 목적을 고른다.
+관찰한 UI에서 디자인 규칙을 추출하고, 패키지의 새 미리보기 화면에서도 재현되는지 검증해 외부 Git 저장소에 보관한다. `extract`는 추출, `reuse`는 패키지 안의 재사용 검증, `gallery`는 갤러리 저장소의 화면/테마/발행을 맡는다.
+
+대상은 결과물이 들어갈 저장소와 요청한 산출물로 구분한다. 준비된 디자인을 별도 제품 코드에 적용하기만 하는 작업은 구현 워크플로가 맡으며, 이 스킬의 설정/보관/발행 절차를 시작하지 않는다. 갤러리 저장소 자체를 바꾸는 작업은 이 본문의 전체 절차를 따른다.
 
 REA는 원본 분석, taste-skill은 용도에 맞는 시각 방향과 개선, Matt Pocock의 prototype은 화면 대안 비교를 맡는다. 아래 참조에서 실제 적용 경로를 고른다.
 
@@ -21,17 +23,17 @@ REA는 원본 분석, taste-skill은 용도에 맞는 시각 방향과 개선, M
 | REA로 앱/번들/웹 분석, 분석 결과를 디자인 근거로 연결 | [REA 추출](references/rea-extraction.md) |
 | 시각 방향 탐색, Taste 적용, 대표 화면과 구조 변형 비교 | [Taste와 prototype](references/taste-and-prototype.md) |
 | 항목 생성/수정/검증, DESIGN.md/토큰 작성 | [산출물 계약](references/package-contract.md) |
-| 기존 레퍼런스 적용, 갤러리/GitHub Pages 관리 | [재사용과 갤러리](references/gallery-and-reuse.md) |
+| 패키지의 재사용 검증, 갤러리 홈페이지/테마/GitHub Pages 관리 | [재사용과 갤러리](references/gallery-and-reuse.md) |
 
 ## 작업 순서
 
 1. 원본, 대상 화면, 플랫폼과 검증할 디자인 질문을 정한다. 대화에서 정한 범위를 재사용한다. 원본이 없으면 사용 가능한 자료를 먼저 조사하고 추출 가능한 범위를 밝힌다.
 2. [설정](references/setup.md)에 따라 현재 갤러리의 실행 진입점을 고르고 `--help`, `doctor`로 대상 저장소를 확인한다. 연결된 갤러리가 없으면 설정 참조에 따라 연결한다.
-3. 추출은 [REA 분석 경로](references/rea-extraction.md)에서 도구를 고르고 원본 근거를 수집한다. 재사용은 기존 `DESIGN.md`, `tokens.json`, 미리보기를 읽는다. 확인한 사실과 추론/새 제안의 구분이 끝나면 구현으로 넘어간다.
-4. 산출물 계약에 맞춰 디자인 규칙과 토큰을 기록하고 프로토타입을 만든다. 기존 프로젝트의 스택을 존중하며 신규 스택은 요구와 검증 목적을 근거로 선택한다.
-5. [Taste와 prototype](references/taste-and-prototype.md)에 따라 원본 재현, 웹 아트 디렉션, 앱 개선을 구분한다. 대표 화면의 비교에는 prototype 절차를 사용하고, Taste는 용도에 맞는 하위 스킬을 선택한다. 사용자가 보관을 요청한 검증 결과는 이 저장소에 남긴다.
-6. 추출 때 없던 새 화면 하나와 관련 상태/화면 크기를 확인한다. 수치 검사는 도구에, 시각/동작 판단은 실제 렌더링에 맡긴다. 확인하지 못한 항목은 미검증으로 기록한다.
-7. `validate`를 실행하고 실패를 고친다. 준비 완료 표시에는 `validate --ready`를 추가한다. 갤러리와 발행은 `build`, `publish`, `finish` 스크립트를 실행한다. 승인 범위에 따라 PR, Actions, 실제 Pages URL 확인까지 이어간다.
+3. 추출은 [REA 분석 경로](references/rea-extraction.md)에서 도구를 고르고 원본 근거를 수집한다. 패키지 재사용 검증은 기존 `DESIGN.md`, `tokens.json`, 미리보기를 읽고 사실과 추론/새 제안을 구분한다.
+4. 항목을 만들거나 바꾸면 산출물 계약에 맞춰 규칙/토큰과 프로토타입을 기록한다. 갤러리 화면/테마 수정은 [갤러리 관리](references/gallery-and-reuse.md#갤러리-관리)의 저장소 소유 파일과 생성물 경계를 따른다.
+5. 시각 방향이나 비교 질문이 있으면 [Taste와 prototype](references/taste-and-prototype.md)에서 목적에 맞는 절차를 고른다. 기존 스택을 존중하며 신규 스택은 요구와 검증 목적을 근거로 선택한다.
+6. 추출/재사용 패키지는 원본에 없던 새 화면과 관련 상태/크기를 확인한다. 갤러리 수정은 변경한 화면의 검색/필터/문서 링크와 관련 테마/화면 크기를 확인한다. 실제 렌더링으로 확인하지 못한 항목은 미검증으로 기록한다.
+7. 항목 변경은 `validate`로 검사하고 준비 완료 표시에는 `validate --ready`를 추가한다. 갤러리 빌드와 발행은 `build`, `publish`, `finish`를 사용한다. 승인 범위에 따라 PR, Actions, 실제 Pages URL 확인까지 이어간다.
 
 ## 작업 기준
 
