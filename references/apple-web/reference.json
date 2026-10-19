@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "apple-web",
+  "title": "Apple / Product storytelling",
+  "status": "ready",
+  "platforms": [
+    "web"
+  ],
+  "tags": [
+    "apple",
+    "product-page",
+    "typography",
+    "editorial",
+    "responsive"
+  ],
+  "preview": "index.html",
+  "thumbnail": "preview.png",
+  "sources": [
+    {
+      "id": "primary",
+      "location": "https://www.apple.com/macbook-pro/",
+      "version": "Observed 2026-10-19",
+      "method": "Live Chrome 155 DOM/computed-style measurement, explicit 1440x1000 desktop and 390x844 mobile viewport, isolated context."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "measured",
+      "source_id": "primary",
+      "locator": "evidence/web-measurements.json: desktop, mobile, layout",
+      "finding": "Selected product headline/section/body/CTA styles and region bounds at desktop/mobile viewports."
+    },
+    {
+      "kind": "proposed",
+      "source_id": "primary",
+      "locator": "index.html; guide.html; tokens.json: proposed",
+      "finding": "Original Folio artwork, composition and getting-started flow reuse the measured hierarchy with system-ui fonts. No pixel identity or complete Apple site library is claimed."
+    }
+  ],
+  "prototype": {
+    "stack": "Static HTML/CSS/JavaScript",
+    "reason": "An inspectable gallery package with local synthetic state needs no framework/backend. This choice does not prescribe a future product stack.",
+    "run": "python3 scripts/gallery.py build --output <empty-directory>; serve the output with python3 -m http.server",
+    "token_css": "assets/tokens.css"
+  },
+  "verification": {
+    "new_screen": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md",
+        "evidence/guide-desktop.png"
+      ],
+      "reason": "Getting started page reuses the type/control grammar and provides validated empty/loading/error/retry/success form states."
+    },
+    "visual": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md",
+        "preview.png",
+        "evidence/web-mobile.png"
+      ],
+      "reason": "Desktop/mobile captures reviewed against the measured source type hierarchy and control styles. Original product illustration and layout are intentional adaptations."
+    },
+    "states": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md"
+      ],
+      "reason": "Finish selection, navigation disclosure, Escape/focus, FAQ and local form states exercised."
+    },
+    "responsive": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md"
+      ],
+      "reason": "Desktop/mobile viewport screenshots and no-horizontal-overflow checks at 390/768/1440 CSS px. New screen checked at 390 px; physical devices not tested."
+    },
+    "accessibility": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md",
+        "evidence/contrast.json"
+      ],
+      "reason": "Scoped check: named controls, keyboard focus and Escape restoration, disabled state, local status messages and selected contrast pairs. This is not a complete WCAG/VoiceOver or native accessibility audit."
+    }
+  },
+  "publication": {
+    "review": "approved",
+    "rights": "cleared",
+    "notes": "Authored implementation and measurements. No Apple image, logo, font file, application binary, user data or source dump.",
+    "files": [
+      "ATTRIBUTION.md",
+      "DESIGN.md",
+      "assets/app.js",
+      "assets/style.css",
+      "evidence/browser-checks.json",
+      "evidence/contrast.json",
+      "evidence/guide-desktop.png",
+      "evidence/guide-mobile.png",
+      "evidence/verification.md",
+      "evidence/web-measurements.json",
+      "evidence/web-mobile.png",
+      "guide.html",
+      "index.html",
+      "preview.png",
+      "reference.json",
+      "tokens.json"
+    ]
+  }
+}

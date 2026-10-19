@@ -1,0 +1,33 @@
+{
+  "method": "WCAG sRGB relative luminance, selected stable opaque CSS combinations. Native alpha label rounded after compositing. Not a complete glass/background or WCAG audit.",
+  "pairs": [
+    {
+      "role": "Body",
+      "foreground": "#f5f5f7",
+      "background": "#000000",
+      "ratio": 19.29,
+      "passes_4_5": true
+    },
+    {
+      "role": "Supporting",
+      "foreground": "#a1a1a6",
+      "background": "#000000",
+      "ratio": 8.16,
+      "passes_4_5": true
+    },
+    {
+      "role": "Primary action",
+      "foreground": "#ffffff",
+      "background": "#0071e3",
+      "ratio": 4.7,
+      "passes_4_5": true
+    },
+    {
+      "role": "Light section supporting",
+      "foreground": "#6e6e73",
+      "background": "#ffffff",
+      "ratio": 5.07,
+      "passes_4_5": true
+    }
+  ]
+}

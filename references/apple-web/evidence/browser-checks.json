@@ -1,0 +1,110 @@
+{
+  "renderer": "Chrome 155.0.8059.80 on macOS",
+  "checked_on": "2026-10-19",
+  "method": "chrome-devtools CLI; isolated context; trusted pointer/keyboard/input controls, DOM snapshots, computed styles, viewport screenshots. State-select events and FAQ disclosure additionally exercised in page context.",
+  "viewport_sizes_css_px": [
+    390,
+    768,
+    1440
+  ],
+  "results": {
+    "web": {
+      "renderer": "Chrome 155 on macOS, isolated context",
+      "checked_on": "2026-10-19",
+      "checks": [
+        {
+          "name": "finish switches",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "product no overflow 390",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "product no overflow 768",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "product no overflow 1440",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "mobile menu opens",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "Escape closes menu and restores focus",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "FAQ opens",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "product no runtime errors",
+          "pass": true,
+          "detail": null
+        }
+      ]
+    },
+    "guide": {
+      "renderer": "Chrome 155 on macOS, isolated context",
+      "checked_on": "2026-10-19",
+      "checks": [
+        {
+          "name": "empty form blocked",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "form loading observed",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "form success",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "form error feedback",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "form retry success",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "guide no overflow 390",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "guide no runtime errors",
+          "pass": true,
+          "detail": null
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "No physical iOS device or VoiceOver test.",
+    "Native integration, persistence and network services are not part of these synthetic previews.",
+    "System reduced-motion/contrast media rules were source-reviewed; the web transparency control was exercised. OS accessibility preference toggles were not changed."
+  ],
+  "runtime_file_sha256": {
+    "index.html": "f2ca6ef8b59db9cb26e0682154792fe1704bd47ad6c42e7078d7086b9c090c1f",
+    "guide.html": "7f0481a94c149266ffcad6ac1dd88e978751b3c45c75ca7ffff44bdead7f650b",
+    "assets/style.css": "e578c3c2d01dafa1565d4af8b52b63818533db43f1fe57e38452fd5977eaeab3",
+    "assets/app.js": "0c144a3c589fa6445b9de7d8f499184139b2aea2d3fc2094ce0d24cbe68a714b"
+  }
+}

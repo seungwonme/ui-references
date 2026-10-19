@@ -1,0 +1,6 @@
+const menu=document.querySelector('#menu'), links=document.querySelector('#local-links');
+menu?.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));links.classList.toggle('open',open);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&links?.classList.contains('open')){links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.focus();}});
+document.querySelectorAll('.swatch').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.swatch').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.querySelector('.device').dataset.finish=b.dataset.finish;document.querySelector('#finish-name').textContent=b.dataset.finish==='silver'?'Silver finish':'Graphite finish';}));
+const form=document.querySelector('#notify-form');
+form?.addEventListener('submit',e=>{e.preventDefault();const status=document.querySelector('#notice'),submit=document.querySelector('#submit');submit.disabled=true;status.textContent='Saving your preference…';setTimeout(()=>{submit.disabled=false;status.textContent=document.querySelector('#simulate-error').checked?'Could not save. Please try again.':'You are on the preview list. No email was sent or stored.';},450)});
