@@ -45,8 +45,8 @@ Matt Pocock prototype's comparison question: can navigation retain a perceptible
 
 Use the material roles, semantic colors, type hierarchy and component relationships in another product. Keep that product's content and platform APIs. The static HTML/CSS/JS stack exists to publish an inspectable gallery preview; it is not a stack recommendation for native products.
 
-Build from the gallery checkout with `python3 scripts/gallery.py build --output <empty-directory>`, then serve the output. Native probe: `swiftc prototype/NativeProbe.swift -o <temporary-executable>`; run without flags for JSON samples, or with `--show` for a specimen. Do not distribute the compiled binary or Apple's framework/font assets.
+Build from the gallery checkout with `uv --no-config run --locked --script scripts/gallery.py build --output <empty-directory>`, then serve the output. Native probe: `swiftc prototype/NativeProbe.swift -o <temporary-executable>`; run without flags for JSON samples, or with `--show` for a specimen. Do not distribute the compiled binary or Apple's framework/font assets.
 
 Actual checks and remaining limits are in [verification](evidence/verification.md) and `reference.json`. Private optical shaders, system morphing, VoiceOver, physical iOS devices and full native accessibility settings are not verified by the web study.
 
-The web CSS puts the `system-ui` generic before the exported named fallback list because the current gallery serializer quotes font-family entries. This preserves the OS font choice without changing the generated runtime.
+The CSS adapter preserves generic font-family keywords. Native guidance keeps its original logical point unit in `$extensions["io.github.seungwonme.reference-ui"].nativeUnit`; generic token consumers still see a number and need a native adapter. The package uses the documented DTCG subset, while this DESIGN document is a prose usage contract. See [token validation evidence](evidence/token-contract-checks.json) for the metadata repair and font/layout regression scope.

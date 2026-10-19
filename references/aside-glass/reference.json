@@ -65,7 +65,7 @@
   "prototype": {
     "stack": "Static HTML/CSS/JavaScript",
     "reason": "The reference tests visual grammar and local UI states, so a backend or framework is unnecessary. This choice does not constrain future projects.",
-    "run": "From the gallery checkout: python3 scripts/gallery.py build --output <empty-output>, then serve that output with python3 -m http.server.",
+    "run": "From the gallery checkout: uv --no-config run --locked --script scripts/gallery.py build --output <empty-output>, then serve that output with python3 -m http.server.",
     "token_css": "assets/tokens.css"
   },
   "verification": {

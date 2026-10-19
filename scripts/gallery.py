@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["jsonschema==4.26.0"]
+# ///
 import runpy
 import sys
 from pathlib import Path

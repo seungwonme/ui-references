@@ -2,7 +2,7 @@
 
 현재 작업이 갤러리 저장소 안이고 루트에 `scripts/gallery.py`가 있으면 그 래퍼를 실행한다. 이 진입점은 저장소 경로를 직접 전달하므로 다른 갤러리를 가리키는 개인 설정을 읽지 않는다.
 
-그 외에는 현재 스킬 경로의 `scripts/reference-ui.py`를 실행한다. 옵션은 `--help`에서 확인하고 설정 파일의 값은 스킬 문서에 복제하지 않는다.
+그 외에는 `uv --no-config run --locked --script <skill-dir>/scripts/reference-ui.py`를 실행한다. 갤러리 래퍼도 `uv --no-config run --locked --script scripts/gallery.py`로 실행한다. 처음에는 고정한 Python 의존성을 uv 캐시에 준비하고, 이후에는 잠금 파일로 같은 환경을 재사용한다. Python을 직접 실행하려면 같은 잠금 파일의 의존성이 설치된 환경을 사용한다. 옵션은 `--help`에서 확인하고 설정 파일의 값은 스킬 문서에 복제하지 않는다.
 
 ## 설정 소유권
 

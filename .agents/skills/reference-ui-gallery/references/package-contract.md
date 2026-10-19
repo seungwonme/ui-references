@@ -5,7 +5,7 @@
 | 파일 | 정본 역할 |
 |---|---|
 | `DESIGN.md` | 디자인 원칙, 구성과 사용 규칙, 상태/반응형/모션/접근성, 플랫폼별 차이 |
-| `tokens.json` | 수치와 참조 관계. DTCG 형식의 `$value`, `$type`, `$description` 사용 |
+| `tokens.json` | 수치와 참조 관계. DTCG 2025.10의 지원 프로파일로 검사 |
 | `reference.json` | 출처, 근거 분류, 플랫폼/태그, 프로토타입 실행법, 검증과 공개 범위 |
 | `index.html` | 갤러리에서 여는 미리보기. 복잡한 데모는 정적 진입점과 실행법 제공 |
 | `assets/` | 해당 항목에서 사용하는 자산과 필요한 비교 근거. 필요한 경우 생성 |
@@ -39,9 +39,22 @@
 
 `verification`의 각 항목은 `pass`, `fail`, `not-run`, `not-applicable` 중 하나로 기록한다. `pass`에는 실제 확인 기록 파일을 연결하고, `not-applicable`에는 이유를 적는다. `new_screen`과 `visual`은 준비 완료에 필수다.
 
-`validate --ready`가 통과한 뒤 `status`를 `ready`로 바꾼다. 이 검사는 필수 파일, 로컬 경로, 기본 토큰 타입/참조, 근거와 검증 기록의 완결성을 검사한다. 전체 DTCG 적합성이나 시각 품질은 증명하지 않는다.
+`validate --ready`가 통과한 뒤 `status`를 `ready`로 바꾼다. 검사 결과의 `token_contract`에는 규격, 프로파일, 공식 스키마 해시와 지원 경계를 남긴다. 필수 파일과 검증 기록의 완결성은 실제 시각 품질과 별개다.
 
-기본 검사기는 중괄호 토큰 별칭을 지원한다. JSON Pointer의 `$ref`와 그룹 `$extends`는 지원하지 않으므로 해당 형식이 필요하면 전체 DTCG 검증 도구를 선택하고 검사기를 확장한 뒤 사용한다.
+## 교환 형식과 검사 범위
+
+- `tokens.json`은 DTCG 2025.10 Format의 공식 스키마를 고정한 로컬 사본으로 검사한다. 원본 해시가 다르면 멈추며, 검사 중 외부 스키마를 다운로드하지 않는다.
+- 지원 프로파일은 `dtcg-2025.10-curly-aliases-v1`이다. 타입별 값, 그룹의 타입 상속, 전체 값과 복합 속성의 중괄호 별칭, 별칭의 타입과 순환을 검사한다. 상속과 별칭을 처리한 값도 다시 타입 검사한다.
+- `$root`, `$extends`, `$ref`, 배열 별칭 펼치기는 이 프로파일에서 오류다. 해당 기능이 필요하면 원본을 보존하고 그 기능을 지원하는 소비자/어댑터를 선택한다. 전체 DTCG 구현이나 Resolver 모듈 준수로 보고하지 않는다.
+- 네이티브 논리 단위나 재질 관측은 이름을 붙인 `$extensions` 또는 근거 파일에 보존한다. `number` 토큰 옆에 독자적인 `unit`을 두거나 네이티브 `pt`를 근거 없이 CSS `px`로 바꾸지 않는다. 일반 소비자는 확장의 의미를 모르므로 해당 플랫폼의 어댑터가 필요하다.
+- `DESIGN.md`는 이 패키지의 사용 규칙 문서다. 파일 이름만으로 Google DESIGN.md 형식이나 다른 외부 형식의 호환성을 주장하지 않는다. Google 소비자를 위한 YAML이 필요하면 정본 토큰에서 별도 프로파일로 생성하고, 토큰 수/alpha/폰트/컴포넌트 관계의 보존을 검사한다.
+- 이 파일 묶음은 프로젝트의 계약이다. 외부 규격 적합성은 구조/값, 참조 의미, 소비자 변환, 실제 렌더링별로 구분해 기록한다.
+
+## 반복 검증 환경
+
+검사기나 패키지 묶음을 바꾸면 갤러리 루트에서 `uv --no-config run --locked --script scripts/gallery.py check`를 실행한다. 전역 스킬에서는 `uv --no-config run --locked --script <skill-dir>/scripts/reference-ui.py --workspace <checkout> check`로 같은 검사를 실행한다. Python 의존성은 스크립트의 잠금 파일로 고정한다.
+
+`check`는 전체 프로젝트 스킬의 전체 회귀 테스트(최소 CI 런타임은 토큰 회귀 테스트), 모든 항목의 파일/공식 스키마/별칭 검사, 설정한 CSS 변환과 임시 공개 빌드를 실행한다. 사용자 설정, Git 상태, 원본 항목을 바꾸거나 발행하지 않는다. 결과에 실제 suite와 실행 수를 기록하고 0개 실행은 실패로 처리한다. Actions도 이 명령을 실행한다. 모델의 스킬 선택, 외부 도구 가져오기, 시각 QA는 이 명령의 결과에 포함하지 않는다.
 
 ## 변경
 
@@ -51,4 +64,6 @@
 
 공개할 때 publication.files에 항목 기준 상대 파일 경로 배열을 넣는다. 미리보기, DESIGN.md, tokens.json, reference.json, 썸네일과 연결된 검증 근거를 포함한다. 목록 밖 파일은 내보내지 않는다.
 
-웹 미리보기에서 토큰 CSS가 필요하면 prototype.token_css에 생성 경로를 적는다. 해당 CSS는 수동 입력 파일로 두지 않는다. 빌더가 토큰의 `$extensions.reference-ui.css_name`과 `theme`(base/light/dark)를 읽어 생성한다. 현재 CSS 출력은 primitive 색상(srgb/oklch/oklab), dimension, duration, fontFamily, fontWeight, number와 별칭을 지원한다. 다른 플랫폼은 그 프로젝트의 변환 도구를 선택한다.
+웹 미리보기에서 토큰 CSS가 필요하면 prototype.token_css에 생성 경로를 적는다. 해당 CSS는 수동 입력 파일로 두지 않는다. 빌더가 토큰의 `$extensions.reference-ui.css_name`과 `theme`(base/light/dark)를 읽어 생성한다. 이 확장은 자체 CSS 어댑터의 계약이며 DTCG Resolver 형식이 아니다.
+
+CSS 출력은 primitive 색상(srgb/oklch/oklab), dimension(px/rem), duration(ms/s), fontFamily, 숫자 fontWeight/number와 전체 값 별칭을 지원한다. CSS generic font family는 키워드로 보존한다. 지원하지 않는 색공간/복합 값은 내보내기를 명시한 경우 오류다. CSS 변환 성공을 네이티브 단위, 모든 테마/재질 또는 다른 소비자의 변환 성공으로 확대하지 않는다.

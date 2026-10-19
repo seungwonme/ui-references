@@ -72,7 +72,7 @@
   "prototype": {
     "stack": "Static HTML/CSS/JavaScript and an authored AppKit probe",
     "reason": "An inspectable gallery package with local synthetic state needs no framework/backend. This choice does not prescribe a future product stack.",
-    "run": "python3 scripts/gallery.py build --output <empty-directory>; serve the output with python3 -m http.server",
+    "run": "uv --no-config run --locked --script scripts/gallery.py build --output <empty-directory>; serve the output with python3 -m http.server",
     "token_css": "assets/tokens.css"
   },
   "verification": {
@@ -148,7 +148,8 @@
       "prototype/NativeProbe.swift",
       "reference.json",
       "settings.html",
-      "tokens.json"
+      "tokens.json",
+      "evidence/token-contract-checks.json"
     ]
   }
 }

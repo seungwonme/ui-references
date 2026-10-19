@@ -47,13 +47,13 @@ Claude Code의 `.claude/skills/reference-ui-gallery`와 GJC의 `.gjc/skills`는 
 
 ## 로컬 사용
 
-Python 3.10+와 Git이 필요하며, GitHub 발행에는 인증된 `gh`를 사용합니다.
+Python 3.10+, uv와 Git이 필요하며, GitHub 발행에는 인증된 `gh`를 사용합니다.
 
 ```sh
-python3 scripts/gallery.py --help
-python3 scripts/gallery.py doctor
-python3 scripts/gallery.py catalog --public
-python3 scripts/gallery.py build --output ./site-preview
+uv --no-config run --locked --script scripts/gallery.py --help
+uv --no-config run --locked --script scripts/gallery.py doctor
+uv --no-config run --locked --script scripts/gallery.py catalog --public
+uv --no-config run --locked --script scripts/gallery.py build --output ./site-preview
 python3 -m http.server --directory ./site-preview
 ```
 
@@ -61,14 +61,16 @@ python3 -m http.server --directory ./site-preview
 
 디자인 시스템을 재사용할 때는 글꼴, 의미 색상, 간격과 컴포넌트 규칙을 대상 서비스에 맞게 적용합니다. 원본 사진과 특정 화면 배치는 재현 요청이나 대상 콘텐츠에 필요한 경우에 사용합니다.
 
+검증 명령 `check`는 회귀 테스트, 전체 패키지의 공식 토큰 스키마/별칭/CSS 검사와 임시 공개 빌드를 수행합니다. 실제 시각 검수와 모델의 스킬 선택 평가는 별도입니다.
+
 ## 수정과 발행
 
 레퍼런스의 값은 `tokens.json`, 사용 규칙은 `DESIGN.md`, 출처와 검증 범위는 `reference.json`에서 관리합니다. 갤러리 자체의 테마는 루트 `gallery.css`에 있습니다.
 
 ```sh
-python3 scripts/gallery.py validate <id> --ready --public
-python3 scripts/gallery.py publish references/<id>
-python3 scripts/gallery.py publish references/<id> --apply
+uv --no-config run --locked --script scripts/gallery.py validate <id> --ready --public
+uv --no-config run --locked --script scripts/gallery.py publish references/<id>
+uv --no-config run --locked --script scripts/gallery.py publish references/<id> --apply
 ```
 
 기본 `publish`는 계획만 출력합니다. `--apply`는 별도 worktree에서 공개 파일과 전체 스킬 묶음을 준비하고 PR과 CI 빌드까지 진행합니다. 리뷰 후 머지까지 승인된 작업에는 `--merge`를 추가할 수 있으며, Actions 배포와 실제 Pages의 커밋을 확인합니다. 중단된 발행은 `finish --pr <number> --entry <id> --apply`로 이어갈 수 있습니다.
@@ -76,5 +78,5 @@ python3 scripts/gallery.py publish references/<id> --apply
 루트 래퍼는 프로젝트 스킬의 코드를 우선 실행합니다. `.reference-ui/`는 호환 런타임과 생성 파일의 버전/hash 기록을 담습니다. 발행 스크립트가 프로젝트 묶음과 런타임을 같은 원본으로 갱신하므로 생성 사본을 각각 편집할 필요가 없습니다.
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s .agents/skills/reference-ui-gallery/tests
+uv --no-config run --locked --script scripts/gallery.py check
 ```
