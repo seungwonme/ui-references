@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "id": "apple-liquid-glass",
+  "title": "Apple / Liquid Glass",
+  "status": "ready",
+  "platforms": [
+    "desktop",
+    "mobile",
+    "web"
+  ],
+  "tags": [
+    "apple",
+    "liquid-glass",
+    "semantic-color",
+    "light-dark",
+    "app-ui"
+  ],
+  "preview": "index.html",
+  "thumbnail": "preview.png",
+  "sources": [
+    {
+      "id": "hig-materials",
+      "location": "https://developer.apple.com/design/human-interface-guidelines/materials",
+      "version": "Retrieved 2026-10-19",
+      "method": "Official material role guidance, regular/clear and accessibility behavior."
+    },
+    {
+      "id": "hig-typography",
+      "location": "https://developer.apple.com/design/human-interface-guidelines/typography",
+      "version": "Retrieved 2026-10-19",
+      "method": "Official native typography roles and platform-specific default sizes."
+    },
+    {
+      "id": "hig-accessibility",
+      "location": "https://developer.apple.com/design/human-interface-guidelines/accessibility",
+      "version": "Retrieved 2026-10-19",
+      "method": "Official control-size and accessibility guidance."
+    },
+    {
+      "id": "native-probe",
+      "location": "https://developer.apple.com/documentation/appkit/nsglasseffectview",
+      "version": "macOS 26.6.2 (25G83), built with SDK 27.0",
+      "method": "Authored NativeProbe.swift; explicit NSAppearance + NSColor runtime sampling and selected-window screencapture. REA binary binding succeeded; native AX observation unavailable."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "observed",
+      "source_id": "hig-materials",
+      "locator": "DESIGN.md: Rules to transfer",
+      "finding": "The navigation/control layer uses Liquid Glass; content uses stable, readable surfaces."
+    },
+    {
+      "kind": "measured",
+      "source_id": "native-probe",
+      "locator": "evidence/native-measurements.json",
+      "finding": "Nine NSColor semantic roles resolved under four explicit appearance names. sRGB components and alpha retained. Contrast-name samples did not change in this environment."
+    },
+    {
+      "kind": "observed",
+      "source_id": "native-probe",
+      "locator": "evidence/native-light.png; prototype/NativeProbe.swift",
+      "finding": "Authored macOS AppKit window renders regular and clear system glass over synthetic swatches. This is a framework specimen, not a captured Apple product app."
+    },
+    {
+      "kind": "proposed",
+      "source_id": "hig-materials",
+      "locator": "tokens.json: web; index.html; settings.html",
+      "finding": "CSS material approximation and Fieldnotes library/preferences apply the documented material roles. Blur, radii, opacity and layout values are authored."
+    }
+  ],
+  "prototype": {
+    "stack": "Static HTML/CSS/JavaScript and an authored AppKit probe",
+    "reason": "An inspectable gallery package with local synthetic state needs no framework/backend. This choice does not prescribe a future product stack.",
+    "run": "python3 scripts/gallery.py build --output <empty-directory>; serve the output with python3 -m http.server",
+    "token_css": "assets/tokens.css"
+  },
+  "verification": {
+    "new_screen": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md",
+        "evidence/settings-dark.png"
+      ],
+      "reason": "Preferences screen rendered in dark desktop and light mobile, labels/toggle/disabled/save-error-retry exercised."
+    },
+    "visual": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md",
+        "preview.png",
+        "evidence/app-dark.png",
+        "evidence/native-light.png"
+      ],
+      "reason": "Light/dark/solid browser captures visually inspected against measured semantic roles and the native AppKit specimen. Optical pixel identity not claimed."
+    },
+    "states": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md"
+      ],
+      "reason": "Search no-result, empty/loading/error/retry, new note, modal and settings feedback checked with synthetic local data."
+    },
+    "responsive": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md"
+      ],
+      "reason": "Desktop/mobile viewport screenshots and no-horizontal-overflow checks at 390/768/1440 CSS px. New screen checked at 390 px; physical devices not tested."
+    },
+    "accessibility": {
+      "status": "pass",
+      "evidence": [
+        "evidence/browser-checks.json",
+        "evidence/verification.md",
+        "evidence/contrast.json"
+      ],
+      "reason": "Scoped check: named controls, keyboard focus and Escape restoration, disabled state, local status messages and selected contrast pairs. This is not a complete WCAG/VoiceOver or native accessibility audit."
+    }
+  },
+  "publication": {
+    "review": "approved",
+    "rights": "cleared",
+    "notes": "Authored implementation and measurements. No Apple image, logo, font file, application binary, user data or source dump.",
+    "files": [
+      "ATTRIBUTION.md",
+      "DESIGN.md",
+      "assets/app.js",
+      "assets/style.css",
+      "evidence/app-dark.png",
+      "evidence/app-mobile.png",
+      "evidence/app-solid.png",
+      "evidence/browser-checks.json",
+      "evidence/contrast.json",
+      "evidence/extraction.md",
+      "evidence/native-light.png",
+      "evidence/native-measurements.json",
+      "evidence/settings-dark.png",
+      "evidence/settings-mobile.png",
+      "evidence/verification.md",
+      "index.html",
+      "native.html",
+      "preview.png",
+      "prototype/NativeProbe.swift",
+      "reference.json",
+      "settings.html",
+      "tokens.json"
+    ]
+  }
+}

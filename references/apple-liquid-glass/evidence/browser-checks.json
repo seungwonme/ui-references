@@ -1,0 +1,171 @@
+{
+  "renderer": "Chrome 155.0.8059.80 on macOS",
+  "checked_on": "2026-10-19",
+  "method": "chrome-devtools CLI; isolated context; trusted pointer/keyboard/input controls, DOM snapshots, computed styles, viewport screenshots. State-select events and FAQ disclosure additionally exercised in page context.",
+  "viewport_sizes_css_px": [
+    390,
+    768,
+    1440
+  ],
+  "results": {
+    "app": {
+      "renderer": "Chrome 155 on macOS, isolated context",
+      "checks": [
+        {
+          "name": "library renders 3 notes",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "empty search feedback",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "empty state",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "loading state",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "error state",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "retry restores notes",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "note dialog opens",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "Escape closes modal and restores focus",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "new note and counter update",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "dark tokens apply",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "solid glass fallback",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "library no overflow 390",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "library no overflow 768",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "library no overflow 1440",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "keyboard focus outline",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "library no console errors reported",
+          "pass": true,
+          "detail": "Chrome console error filter returned no messages after interactions."
+        }
+      ]
+    },
+    "settings": {
+      "renderer": "Chrome 155 on macOS, isolated context",
+      "checked_on": "2026-10-19",
+      "checks": [
+        {
+          "name": "theme retained on new screen",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "preferences success feedback",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "preferences error feedback",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "preferences retry",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "switch toggles",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "disabled connection",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "settings no overflow 390",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "settings no runtime errors",
+          "pass": true,
+          "detail": null
+        }
+      ]
+    },
+    "final-dialog": {
+      "renderer": "Chrome 155 on macOS, isolated context",
+      "checked_on": "2026-10-19",
+      "checks": [
+        {
+          "name": "dialog accessible name",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "name": "dialog still restores focus",
+          "pass": true,
+          "detail": null
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "No physical iOS device or VoiceOver test.",
+    "Native integration, persistence and network services are not part of these synthetic previews.",
+    "System reduced-motion/contrast media rules were source-reviewed; the web transparency control was exercised. OS accessibility preference toggles were not changed."
+  ],
+  "runtime_file_sha256": {
+    "index.html": "7317e51ca0845507afe5775ef8707be0723cecddbb3bea142b4fd09da1c6713f",
+    "native.html": "65484f695e7f7a77ef7eab43758aa6795b35bdc79ba1515f59e216ebf2abe428",
+    "settings.html": "0ab2cc8e60567e71ea6bb9ace1a073381b0a59c9776f6707fcb2157820c834bc",
+    "assets/style.css": "2f97d0055830e406014b99f1d991d8d35d63ae3d2d5fd0a752e14cf0757875e2",
+    "assets/app.js": "9535a7ba2b62eac30716fc6ce76388308e869e474310d4b19b489e3e524e3d38"
+  }
+}
