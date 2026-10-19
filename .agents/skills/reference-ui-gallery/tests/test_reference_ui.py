@@ -21,8 +21,8 @@ class ReferenceUiTest(unittest.TestCase):
         self.config = self.base / "settings/config.json"
         self.call("config", "init", "--workspace", str(self.repo))
 
-    def call(self, *args, ok=True):
-        result = subprocess.run([sys.executable, str(SCRIPT), "--config", str(self.config), *args], text=True, capture_output=True)
+    def call(self, *args, ok=True, env=None):
+        result = subprocess.run([sys.executable, str(SCRIPT), "--config", str(self.config), *args], env=env, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0 if ok else 1, result.stdout + result.stderr)
         return json.loads(result.stdout if result.stdout else result.stderr)
 
@@ -254,10 +254,12 @@ class ReferenceUiTest(unittest.TestCase):
         meta["publication"]["review"] = "pending"
         self.save(root, "reference.json", meta)
         self.call("build", "--output", str(self.base / "public"), ok=False)
-        self.call("build", "--drafts", "--output", str(self.base / "draft"))
+        import os
+        local_env = dict(os.environ)
+        local_env.pop("GITHUB_ACTIONS", None)
+        self.call("build", "--drafts", "--output", str(self.base / "draft"), env=local_env)
         self.assertTrue(json.loads((self.base / "draft/build.json").read_text())["drafts"])
         self.assertIn("DRAFT", (self.base / "draft/index.html").read_text())
-        import os
         env = dict(os.environ, GITHUB_ACTIONS="true")
         result = subprocess.run([sys.executable, str(SCRIPT), "--config", str(self.config), "build", "--drafts", "--output", str(self.base / "ci")], env=env, text=True, capture_output=True)
         self.assertEqual(result.returncode, 1)

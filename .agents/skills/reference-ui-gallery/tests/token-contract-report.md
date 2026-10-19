@@ -10,6 +10,7 @@ Candidate: reference-ui 0.6.0. This report covers deterministic token validation
 - The reviewed implementation passed 47 unittest cases, including all 13 DTCG value types, malformed values, inherited/resolved values, missing/cyclic aliases, schema tampering, native metadata and CSS font keywords.
 - The full check passed for Aside (90 tokens), Apple web (42) and Apple app UI (57): 189 tokens retained.
 - The same check ran through the generated project wrapper, without relying on an installed global skill or personal gallery configuration.
+- The full suite also ran with the CI environment flag enabled. The local draft fixture isolates that flag in its own subprocess; the explicit CI draft-rejection case remains enforced.
 - The baseline Apple app input is rejected for its extra native unit fields. The repair preserves numeric values and moves logical point metadata into an extension.
 - The schema resource is bundled without changes and its SHA-256 is checked before use. A validation test forbids socket connection attempts.
 
