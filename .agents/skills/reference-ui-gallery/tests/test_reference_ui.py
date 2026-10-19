@@ -313,6 +313,14 @@ class ReferenceUiTest(unittest.TestCase):
         spec.loader.exec_module(gallery)
         return api, gallery
 
+    def test_exported_skill_and_bundle_share_release_version(self):
+        api, gallery = self.bundle_modules()
+        gallery.install_bundle(self.repo, "main", api, project_skill=True)
+        manifest = json.loads((self.repo / ".reference-ui/bundle.json").read_text())
+        skill = (self.repo / ".agents/skills/reference-ui-gallery/SKILL.md").read_text()
+        declared = next(line.partition(":")[2].strip().strip('"') for line in skill.splitlines() if line.startswith("  version:"))
+        self.assertEqual(manifest["version"], declared)
+
     def test_project_skill_bundle_runs_after_relocation_without_user_config(self):
         self.public_ready()
         api, gallery = self.bundle_modules()

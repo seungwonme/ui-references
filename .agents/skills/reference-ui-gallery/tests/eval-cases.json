@@ -40,8 +40,8 @@
     },
     {
       "id": 5,
-      "prompt": "Vue로 만든 업무 대시보드를 추출한 디자인 시스템으로 개선해줘. 원본의 Inter, 글래스와 얇은 테두리를 유지하면서 taste-skill과 prototype을 써줘.",
-      "expected_output": "앱에 맞는 Taste 진단 경로를 선택하고 원본 규칙과 기존 스택을 보존하며 구조를 비교한다.",
+      "prompt": "추출한 디자인 시스템을 Vue로 재현한 대시보드 미리보기가 있어. 같은 패키지 안에 재사용 검증용 설정 화면을 만들고 갤러리 항목에 보관해줘. 원본의 Inter, 글래스와 얇은 선을 유지하며 taste-skill과 prototype을 써줘.",
+      "expected_output": "reference-ui가 패키지의 재사용 검증과 보관을 맡고, 앱용 Taste 진단과 원본 규칙/스택을 보존한다.",
       "expectations": [
         "기본 Taste v2 웹 규칙을 대시보드에 강제하지 않는다",
         "redesign-existing-projects의 적합한 진단 항목을 선택한다",
@@ -69,6 +69,23 @@
         "REA나 Taste를 실행했다고 주장하지 않는다",
         "정확한 폰트/blur/breakpoint를 원본 사실로 확정하지 않는다",
         "자료가 허용하는 범위에서 디자인 규칙과 프로토타입 작업을 진행한다"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "우리 Vue 앱에 갤러리에서 가져온 디자인 시스템으로 설정 화면을 적용해줘. DESIGN.md와 토큰 파일은 이미 있고, 새 레퍼런스 패키지나 갤러리 보관은 필요 없어.",
+      "expected_output": "reference-ui를 구현 담당으로 선택하지 않고 제공한 디자인 자료를 제품 구현에 전달한다.",
+      "expectations": [
+        "갤러리 연결/보관/발행을 시작하지 않는다"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "기존 ui-references 갤러리 저장소의 홈페이지를 Aside 디자인으로 바꿔줘. 이 저장소에는 scripts/gallery.py, gallery.css, .reference-ui/bundle.json과 공개 항목들이 있어.",
+      "expected_output": "reference-ui의 전체 갤러리 관리 절차로 처리한다.",
+      "expectations": [
+        "gallery.css와 --gallery-style을 사용한다",
+        "생성물 소유권과 PR/Actions/Pages 검증 경로를 지킨다"
       ]
     }
   ]
